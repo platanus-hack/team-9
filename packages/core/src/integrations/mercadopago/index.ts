@@ -37,13 +37,18 @@ const getConfigValues = async (
     : {};
   const itemTitle = config.itemTitle
     ? await getValueFrom(config.itemTitle, [referenceId])
-    : "Payment vía";
+    : "Payment vía ";
   return {
     accessToken: await accessTokenP,
     backUrls: await backUrlsP,
     itemTitle,
   };
 };
+
+enum PaymentActions {
+  CREATED = "payment.created",
+  UPDATED = "payment.updated",
+}
 
 export const createMercadoPagoIntegration = (
   config: MercadoPagoIntegrationConfig
@@ -100,6 +105,23 @@ export const createMercadoPagoIntegration = (
 
           return mpResponse;
         });
+      },
+      handleWebhookRequest: (originalRequest, req) => {
+        const body = req.body;
+
+        if (!body) throw new Error("Bad event");
+        if (
+          ![PaymentActions.CREATED, PaymentActions.UPDATED].includes(
+            body["action"]
+          )
+        )
+          throw new Error("Bad event: unknown actions");
+
+        const id = body["data"]?.id as string | undefined;
+
+        if (!id) throw new Error("No id");
+
+        return Effect.succeed({ id });
       },
     })
   );

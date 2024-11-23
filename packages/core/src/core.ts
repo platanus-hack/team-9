@@ -125,6 +125,37 @@ export class Core {
         return Effect.runPromise(runnable);
       }
     );
+
+    this.router.add(
+      SupportedHTTPMethod.POST,
+      `/integration/${integrationName}/webhook`,
+      async ({ originalRequest, req }) => {
+        const program = Effect.gen(function* () {
+          const integration = yield* Integration;
+
+          const { id } = yield* integration.handleWebhookRequest(
+            originalRequest,
+            req
+          );
+
+          const body = req.body;
+          yield* integration.processPayment(id);
+        });
+
+        const runnable = Effect.provide(program, integrationLive);
+
+        try {
+          await Effect.runPromise(runnable);
+        } catch (e) {
+          console.log(e);
+        }
+
+        return {
+          headers: { "Content-Type": "application/json" },
+          body: {},
+        };
+      }
+    );
   };
   processRequest = async (req: Request) => {
     return processRequest(this.router, req, this.basePath);

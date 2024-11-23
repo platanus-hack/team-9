@@ -1,6 +1,8 @@
 import { Console, Context, Effect, Either, Layer } from "effect";
 import { PaymentIntentStatus, SupportedCurrencies } from "../constants";
 import { DataService, PaymentIntent } from "../services/data.service";
+import { RequestInternal } from "../internal.types";
+import { match } from "ts-pattern";
 
 export type PaymentIntentOutput = { id: string; link: string };
 
@@ -21,21 +23,27 @@ type Detail = {
   getPaymentIntentStatus(
     paymentIntentId: string
   ): Effect.Effect<{ status: PaymentIntentStatus }>;
+  handleWebhookRequest(
+    req: Request,
+    internalRequest: RequestInternal
+  ): Effect.Effect<{ id: string }>;
+  getPaymentIntentStatus(paymentIntentId: string): Effect.Effect<{
+    status: PaymentIntentStatus;
+  }>;
 };
 export class IntegrationDetail extends Context.Tag(
   "@rccpr/internal/integration-detail"
 )<IntegrationDetail, Detail>() {}
 
+type FullIntegration = Detail & {
+  onApproved: (paymentIntentId: string) => Effect.Effect<void>;
+  onRejected: (paymentIntentId: string) => Effect.Effect<void>;
+  onPending: (paymentIntentId: string) => Effect.Effect<void>;
+  processPayment(paymentIntentId: string): Effect.Effect<void>;
+};
 export class Integration extends Context.Tag(
   "@rccpr/internal/integration-detail"
-)<
-  Integration,
-  Detail & {
-    onApproved: (paymentIntentId: string) => Effect.Effect<void>;
-    onRejected: (paymentIntentId: string) => Effect.Effect<void>;
-    onPending: (paymentIntentId: string) => Effect.Effect<void>;
-  }
->() {}
+)<Integration, FullIntegration>() {}
 
 export type CallbackData = {
   body: Record<string, any> | undefined;
@@ -79,6 +87,99 @@ const IntegrationLive = Layer.effect(
     const details = yield* IntegrationDetail;
     const integrationConfig = yield* IntegrationConfigContext;
 
+    const onRejected = (paymentIntentId: string) =>
+      Effect.gen(function* () {
+        yield* Effect.promise(() =>
+          dataService.updatePaymentIntent(
+            { id: paymentIntentId },
+            {
+              status: "FAILED",
+            }
+          )
+        );
+        const result = yield* Effect.either(
+          Effect.tryPromise(() => dataService.getOrderById(paymentIntentId))
+        );
+
+        if (Either.isLeft(result)) {
+          return;
+        }
+        if (!result.right) {
+          return;
+        }
+        const paymentIntent = result.right;
+
+        yield* Effect.tryPromise(() =>
+          (async () =>
+            integrationConfig.onRejected({
+              body: paymentIntent,
+              integrationName: details.name,
+              paymentIntent,
+            }))()
+        ).pipe(Effect.catchAll((e) => Console.log("Error")));
+
+        return;
+      });
+
+    const onApproved = (paymentIntentId: string) =>
+      Effect.gen(function* () {
+        yield* Effect.promise(() =>
+          dataService.updatePaymentIntent(
+            { id: paymentIntentId },
+            {
+              status: "SUCCEEDED",
+            }
+          )
+        );
+        const result = yield* Effect.either(
+          Effect.tryPromise(() => dataService.getOrderById(paymentIntentId))
+        );
+
+        if (Either.isLeft(result)) {
+          return;
+        }
+        if (!result.right) {
+          return;
+        }
+        const paymentIntent = result.right;
+
+        yield* Effect.tryPromise(() =>
+          (async () =>
+            integrationConfig.onApproved({
+              body: paymentIntent,
+              integrationName: details.name,
+              paymentIntent,
+            }))()
+        ).pipe(Effect.catchAll((e) => Console.log("Error")));
+
+        return;
+      });
+    const onPending = (paymentIntentId: string) =>
+      Effect.gen(function* () {
+        const result = yield* Effect.either(
+          Effect.tryPromise(() => dataService.getOrderById(paymentIntentId))
+        );
+
+        if (Either.isLeft(result)) {
+          return;
+        }
+        if (!result.right) {
+          return;
+        }
+        const paymentIntent = result.right;
+
+        yield* Effect.tryPromise(() =>
+          (async () =>
+            integrationConfig.onPending({
+              body: paymentIntent,
+              integrationName: details.name,
+              paymentIntent,
+            }))()
+        ).pipe(Effect.catchAll((e) => Console.log("Error")));
+
+        return;
+      });
+
     return {
       createPaymentIntent: (options) =>
         Effect.gen(function* () {
@@ -116,98 +217,22 @@ const IntegrationLive = Layer.effect(
         Effect.gen(function* () {
           return yield* details.getPaymentIntentStatus(paymentIntentId);
         }),
+      handleWebhookRequest: details.handleWebhookRequest,
       name: details.name,
-      onRejected: (paymentIntentId) =>
-        Effect.gen(function* () {
-          yield* Effect.promise(() =>
-            dataService.updatePaymentIntent(
-              { id: paymentIntentId },
-              {
-                status: "FAILED",
-              }
-            )
-          );
-          const result = yield* Effect.either(
-            Effect.tryPromise(() => dataService.getOrderById(paymentIntentId))
-          );
+      onRejected,
+      onApproved,
+      onPending,
+      processPayment: (paymentIntentId: string) => {
+        return Effect.gen(function* () {
+          const { status } =
+            yield* details.getPaymentIntentStatus(paymentIntentId);
 
-          if (Either.isLeft(result)) {
-            return;
-          }
-          if (!result.right) {
-            return;
-          }
-          const paymentIntent = result.right;
-
-          yield* Effect.tryPromise(() =>
-            (async () =>
-              integrationConfig.onRejected({
-                body: paymentIntent,
-                integrationName: details.name,
-                paymentIntent,
-              }))()
-          ).pipe(Effect.catchAll((e) => Console.log("Error")));
-
-          return;
-        }),
-      onApproved: (paymentIntentId) =>
-        Effect.gen(function* () {
-          yield* Effect.promise(() =>
-            dataService.updatePaymentIntent(
-              { id: paymentIntentId },
-              {
-                status: "SUCCEEDED",
-              }
-            )
-          );
-          const result = yield* Effect.either(
-            Effect.tryPromise(() => dataService.getOrderById(paymentIntentId))
-          );
-
-          if (Either.isLeft(result)) {
-            return;
-          }
-          if (!result.right) {
-            return;
-          }
-          const paymentIntent = result.right;
-
-          yield* Effect.tryPromise(() =>
-            (async () =>
-              integrationConfig.onApproved({
-                body: paymentIntent,
-                integrationName: details.name,
-                paymentIntent,
-              }))()
-          ).pipe(Effect.catchAll((e) => Console.log("Error")));
-
-          return;
-        }),
-      onPending: (paymentIntentId) =>
-        Effect.gen(function* () {
-          const result = yield* Effect.either(
-            Effect.tryPromise(() => dataService.getOrderById(paymentIntentId))
-          );
-
-          if (Either.isLeft(result)) {
-            return;
-          }
-          if (!result.right) {
-            return;
-          }
-          const paymentIntent = result.right;
-
-          yield* Effect.tryPromise(() =>
-            (async () =>
-              integrationConfig.onPending({
-                body: paymentIntent,
-                integrationName: details.name,
-                paymentIntent,
-              }))()
-          ).pipe(Effect.catchAll((e) => Console.log("Error")));
-
-          return;
-        }),
+          return yield* match(status)
+            .with("SUCCEEDED", () => onApproved(paymentIntentId))
+            .with("FAILED", () => onRejected(paymentIntentId))
+            .otherwise(() => onPending(paymentIntentId));
+        });
+      },
     };
   })
 );
