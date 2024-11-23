@@ -1,5 +1,11 @@
 # @rccpr/cli
 
+## 1.1.3
+
+### Patch Changes
+
+- fb2415e: minor types changes
+
 ## 1.1.1
 
 ### Patch Changes
