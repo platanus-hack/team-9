@@ -1,5 +1,5 @@
 {
-  "name": "hackathon-platanus-cli",
+  "name": "@rccpr/cli",
   "version": "1.0.0",
   "description": "CLI project",
   "index": "dist/index.js",
