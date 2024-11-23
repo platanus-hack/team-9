@@ -39,6 +39,7 @@ const requestBody = z.object({
 
 class SchemaError {
   readonly _tag = "SchemaError";
+  constructor(readonly cause: string) {}
 }
 
 export class Core {
@@ -90,7 +91,11 @@ export class Core {
           const parsedBody = requestBody.safeParse(ctx.req.body);
 
           if (!parsedBody.success) {
-            return yield* Effect.fail(new SchemaError());
+            return yield* Effect.fail(
+              new SchemaError(
+                parsedBody.error.flatten().formErrors.at(0) ?? "Schema error"
+              )
+            );
           }
           const paymentIntent = yield* integration.createPaymentIntent({
             baseUnit: parsedBody.data.unitBase,
@@ -105,9 +110,12 @@ export class Core {
           };
         }).pipe(
           Effect.catchTags({
-            SchemaError: () =>
+            SchemaError: ({ cause }) =>
               Effect.succeed({
                 status: 422,
+                body: JSON.stringify({
+                  cause,
+                }),
               }),
           })
         );
