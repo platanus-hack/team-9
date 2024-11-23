@@ -20,7 +20,7 @@ type Integrations = [
   },
 ];
 
-type DataServiceType = Context.Tag.Service<DataService>;
+export type DataServiceType = Context.Tag.Service<DataService>;
 type IntegrationConfigContextType =
   Context.Tag.Service<IntegrationConfigContext>;
 
@@ -93,7 +93,7 @@ export class Core {
           if (!parsedBody.success) {
             return yield* Effect.fail(
               new SchemaError(
-                parsedBody.error.flatten().formErrors.at(0) ?? "Schema error"
+                parsedBody.error.flatten().formErrors.at(0) ?? "Schema error "
               )
             );
           }

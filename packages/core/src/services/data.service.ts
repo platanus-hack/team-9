@@ -42,8 +42,8 @@ abstract class Data<TransactionCTX = PlaceholderCTX> {
   */
 
   async createPaymentIntent(
-    value: CreatePaymentParams,
-    ctx?: TransactionCTX
+    value: CreatePaymentParams
+    // ctx?: TransactionCTX
   ): Promise<PaymentIntent> {
     throw new Error("you must implement createOrder");
 
@@ -52,8 +52,8 @@ abstract class Data<TransactionCTX = PlaceholderCTX> {
 
   async updatePaymentIntent(
     find: Partial<PaymentIntent>,
-    update: Partial<PaymentIntent>,
-    ctx?: TransactionCTX
+    update: Partial<PaymentIntent>
+    // ctx?: TransactionCTX
   ): Promise<PaymentIntent> {
     throw new Error("you must implement createOrder");
 
