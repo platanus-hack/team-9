@@ -23,6 +23,7 @@ const requestToInternalResponse = async (
   const method = req.method;
 
   const finalPathname = basePath ? pathname.replace(basePath, "") : pathname;
+  console.log({ pathname, finalPathname });
 
   const [match] = router.match(method, finalPathname);
   if (match.length === 0) {

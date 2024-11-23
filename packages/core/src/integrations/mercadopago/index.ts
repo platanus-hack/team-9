@@ -45,7 +45,9 @@ const getConfigValues = async (
   };
 };
 
-const createMercadoPagoIntegration = (config: MercadoPagoIntegrationConfig) => {
+export const createMercadoPagoIntegration = (
+  config: MercadoPagoIntegrationConfig
+) => {
   const name = "mercadopago" as const;
 
   const mercadoPagoLive = Layer.succeed(
@@ -104,5 +106,3 @@ const createMercadoPagoIntegration = (config: MercadoPagoIntegrationConfig) => {
 
   return { [name]: mercadoPagoLive.pipe(createIntegration) };
 };
-
-const integration = createMercadoPagoIntegration({ accessToken: "!@3123" });

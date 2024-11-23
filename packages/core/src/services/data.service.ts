@@ -1,4 +1,4 @@
-import { Effect, Context } from "effect";
+import { Context } from "effect";
 import type { Jsonifiable } from "type-fest";
 import { PaymentIntentStatus, SupportedCurrencies } from "../constants";
 
@@ -24,17 +24,17 @@ export type PaymentIntent = {
 
 export type WithTransactionCallback<T, TransactionCTX> = (
   ctx: TransactionCTX
-) => Effect.Effect<T>;
+) => Promise<T>;
 
 type PlaceholderCTX = { __type: "PlaceholderCTX" };
 
 abstract class Data<TransactionCTX = PlaceholderCTX> {
   public abstract callWithCtx<T>(
     callback: WithTransactionCallback<T, TransactionCTX>
-  ): Effect.Effect<T>;
+  ): Promise<T>;
   startTransaction<T>(
     callback: WithTransactionCallback<T, TransactionCTX>
-  ): Effect.Effect<T> {
+  ): Promise<T> {
     return this.callWithCtx(callback);
   }
 
