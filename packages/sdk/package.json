@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@rccpr/eslint-config": "*",
+    "@rccpr/core": "*",
     "@rccpr/tsconfig": "*",
     "eslint": "^8.57.0",
     "tsup": "^8.0.2",

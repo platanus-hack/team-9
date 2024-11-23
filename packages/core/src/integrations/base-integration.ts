@@ -1,6 +1,9 @@
 import { Console, Context, Effect, Either, Layer } from "effect";
 import { PaymentIntentStatus, SupportedCurrencies } from "../constants";
 import { DataService, PaymentIntent } from "../services/data.service";
+
+export type PaymentIntentOutput = { id: string; link: string };
+
 type Detail = {
   name: string;
   createPaymentIntent(options: {
@@ -8,7 +11,7 @@ type Detail = {
     paymentIntentId: string;
     externalId: string;
     currency: SupportedCurrencies;
-  }): Effect.Effect<{ id: string; link: string }>;
+  }): Effect.Effect<PaymentIntentOutput>;
 
   /**
    * Check against the implemented service in which status the order is.
