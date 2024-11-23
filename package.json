@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.46.1",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.50.0",
     "@trpc/client": "^11.0.0-rc.446",
@@ -38,7 +40,7 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.3"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/eslint": "^8.56.10",
