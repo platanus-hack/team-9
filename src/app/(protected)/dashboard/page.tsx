@@ -1,4 +1,5 @@
 import { Overview } from "@/components/overview";
+import PaymentProviderSetup from "@/components/payments-provider";
 import { RecentSales } from "@/components/recent-sales";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -120,6 +121,8 @@ export default function DashboardPage() {
             </CardContent>
           </CardHeader>
         </Card>
+                  <PaymentProviderSetup/>
+
       </div>
     </div>
   );

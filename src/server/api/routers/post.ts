@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/api/trpc";
+import { apikeyService  } from "@/service/apikey.service";
+import { apikeysTypes } from "@/components/payments-provider";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
@@ -20,7 +22,12 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
-
+  saveApiKey: protectedProcedure
+    .input(apikeysTypes)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.auth.userId
+      return await apikeyService.createProviders(input, userId)
+    }),
   getLatest: publicProcedure.query(async ({ ctx }) => {
     const post = await ctx.db.post.findFirst({
       orderBy: { createdAt: "desc" },

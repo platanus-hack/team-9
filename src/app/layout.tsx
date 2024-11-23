@@ -34,14 +34,6 @@ export default function RootLayout({
           <TRPCReactProvider>
             <Navbar />
             {children}
-            <body>
-              <SignedOut>
-                <SignInButton />
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-            </body>
           </TRPCReactProvider>
         </body>
       </ClerkProvider>

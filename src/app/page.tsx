@@ -1,3 +1,4 @@
+import PaymentProviderSetup from '@/components/payments-provider'
 import { Stepper } from '@/components/stepper'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'

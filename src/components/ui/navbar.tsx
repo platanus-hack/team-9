@@ -9,7 +9,7 @@ import { Button } from './button'
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { isLoaded } = useSignIn()
+//   const { isLoaded } = useSignIn()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,7 +20,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  if (!isLoaded) return null
+//   if (!isLoaded) return null
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${
