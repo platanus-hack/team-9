@@ -50,25 +50,17 @@ export function AuthComponent() {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
+      const { error } = await supabaseClient.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
 
       if (error) throw error;
 
-      console.log({
-        title: "Sign in successful",
-        description: "Welcome back!",
-      });
+      console.log("Sign in successful");
       router.push("/dashboard");
     } catch (error) {
       console.error("Sign in error", error);
-      console.log({
-        title: "Sign in failed",
-        description: "Please check your credentials and try again.",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
@@ -78,37 +70,30 @@ export function AuthComponent() {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabaseClient.auth.signUp({
+      const { error } = await supabaseClient.auth.signUp({
         email: values.email,
         password: values.password,
       });
 
       if (error) throw error;
 
-      console.log({
-        title: "Sign up successful",
-        description:
-          "Welcome to our platform! Please check your email to confirm your account.",
-      });
+      console.log("Sign up successful");
       router.push("/dashboard");
     } catch (error) {
       console.error("Sign up error", error);
-      console.log({
-        title: "Sign up failed",
-        description: "An error occurred during sign up. Please try again.",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
-      <Card className="w-[350px]">
+    <div className="flex h-screen w-screen items-center justify-center bg-gray-100">
+      <Card className="w-[350px] shadow-lg">
         <CardHeader>
-          <CardTitle>Authentication</CardTitle>
-          <CardDescription>Sign in or create a new account</CardDescription>
+          <CardTitle className="text-center">Authentication</CardTitle>
+          <CardDescription className="text-center">
+            Sign in or create a new account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
