@@ -73,13 +73,3 @@ export class DataService extends Context.Tag("@rccpr/internal/data-service")<
   DataService,
   Data<any>
 >() {}
-
-const program = Effect.gen(function* () {
-  const dataService = yield* DataService;
-  dataService.createPaymentIntent({
-    serviceName: "test",
-    externalId: "test",
-    currency: "USD",
-    baseUnit: 10 * 100,
-  });
-});

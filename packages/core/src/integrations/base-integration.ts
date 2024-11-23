@@ -206,4 +206,9 @@ const IntegrationLive = Layer.effect(
     };
   })
 );
-export const createIntegration = (name: string) => {};
+
+export const createIntegration = (
+  integrationDetail: Layer.Layer<IntegrationDetail>
+) => {
+  return IntegrationLive.pipe(Layer.provide(integrationDetail));
+};
