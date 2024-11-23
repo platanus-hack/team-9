@@ -23,7 +23,9 @@ export class IntegrationDetail extends Context.Tag(
   "@rccpr/internal/integration-detail"
 )<IntegrationDetail, Detail>() {}
 
-class Integration extends Context.Tag("@rccpr/internal/integration-detail")<
+export class Integration extends Context.Tag(
+  "@rccpr/internal/integration-detail"
+)<
   Integration,
   Detail & {
     onApproved: (paymentIntentId: string) => Effect.Effect<void>;
@@ -63,7 +65,7 @@ type IntegrationConfig = {
   onPending: (data: CallbackData) => Promise<void> | void;
 };
 
-class IntegrationConfigContext extends Context.Tag(
+export class IntegrationConfigContext extends Context.Tag(
   "@rccpr/internal/integration-config"
 )<IntegrationConfigContext, IntegrationConfig>() {}
 

@@ -1,4 +1,5 @@
 import { type SerializeOptions } from "cookie";
+import type { Params, ParamIndexMap } from "@rccpr/trie-router";
 
 export type RequestInternal = {
   url: URL;
@@ -30,3 +31,9 @@ export interface ResponseInternal<
   redirect?: string;
   cookies?: Cookie[];
 }
+
+export type RccprHandler = (ctx: {
+  req: RequestInternal;
+  params: Params | ParamIndexMap;
+  originalRequest: Request;
+}) => ResponseInternal | Promise<ResponseInternal>;
