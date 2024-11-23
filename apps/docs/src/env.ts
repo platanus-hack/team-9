@@ -29,5 +29,6 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     MP_ACCESS_TOKEN: process.env.MP_ACCESS_TOKEN,
+    NEXT_PAY_URL: process.env.NEXT_PAY_URL,
   },
 });
