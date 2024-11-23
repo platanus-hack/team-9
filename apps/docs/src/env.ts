@@ -10,6 +10,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     MP_ACCESS_TOKEN: z.string().min(1),
+    NEXT_PAY_URL: z.string().url(),
   },
   /*
    * Environment variables available on the client (and server).

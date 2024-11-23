@@ -2,14 +2,14 @@ import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import { SupportedCurrencies } from "./supported-currencies";
 import type { PaymentIntentOutput } from "@rccpr/core";
 
-type NextPaySdkOptions = {
+type PaySdkOptions = {
   apiURL: string;
   axiosOptions?: AxiosRequestConfig;
 };
 
-export class NextPaySdk {
+export class PaySdk {
   axios: AxiosInstance;
-  constructor(options: NextPaySdkOptions) {
+  constructor(options: PaySdkOptions) {
     this.axios = axios.create({
       ...(options.axiosOptions ?? {}),
       baseURL: options.apiURL,
@@ -37,24 +37,21 @@ export class NextPaySdk {
   requestPaymentLink = async ({
     service,
     selectedCurrency,
-    amount,
+    unitBase,
     referenceId,
-    name,
   }: {
     service: string;
     selectedCurrency: SupportedCurrencies;
-    amount: string | number;
+    unitBase: number;
     referenceId: string;
-    name?: string;
   }): Promise<PaymentIntentOutput> => {
     const serviceString = String(service);
     const response = await this.axios.post<PaymentIntentOutput>(
       `/integration/${serviceString}/create_request`,
       {
         currency: selectedCurrency,
-        amount,
+        unitBase,
         referenceId,
-        name,
       }
     );
 
