@@ -11,7 +11,6 @@ export class TrieRouter<T> implements Router<T> {
   }
 
   add(method: string, path: string, handler: T) {
-    console.log("wow");
     const results = checkOptionalParameter(path);
     if (results) {
       for (let i = 0, len = results.length; i < len; i++) {

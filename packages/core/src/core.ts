@@ -37,6 +37,10 @@ const requestBody = z.object({
   referenceId: z.string(),
 });
 
+class SchemaError {
+  readonly _tag = "SchemaError";
+}
+
 export class Core {
   router = new TrieRouter<RccprHandler>();
   integrations: Integrations;
@@ -80,21 +84,13 @@ export class Core {
     this.router.add(
       SupportedHTTPMethod.POST,
       `/integration/${integrationName}/create_request`,
-      async (
-        ctx
-      ): Promise<{
-        body: {
-          id: string;
-          link: string;
-        };
-        headers: { "Content-Type": string };
-      }> => {
+      async (ctx) => {
         const program = Effect.gen(function* () {
           const integration = yield* Integration;
           const parsedBody = requestBody.safeParse(ctx.req.body);
 
           if (!parsedBody.success) {
-            return yield* Effect.fail(new Error("Invalid request body"));
+            return yield* Effect.fail(new SchemaError());
           }
           const paymentIntent = yield* integration.createPaymentIntent({
             baseUnit: parsedBody.data.unitBase,
@@ -107,7 +103,14 @@ export class Core {
             headers: { "Content-Type": "application/json" },
             body: paymentIntent,
           };
-        });
+        }).pipe(
+          Effect.catchTags({
+            SchemaError: () =>
+              Effect.succeed({
+                status: 422,
+              }),
+          })
+        );
 
         const runnable = Effect.provide(program, integrationLive);
 

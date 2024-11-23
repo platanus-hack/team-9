@@ -12,7 +12,7 @@ const mockData = {
 } as const;
 
 const core = new Core({
-  basePath: "/api",
+  basePath: "/api/pay",
   integrations: [
     createMercadoPagoIntegration({
       accessToken: "sdada",

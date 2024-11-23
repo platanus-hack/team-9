@@ -26,6 +26,7 @@ const requestToInternalResponse = async (
   console.log({ pathname, finalPathname });
 
   const [match] = router.match(method, finalPathname);
+  console.log({ match });
   if (match.length === 0) {
     throw new Error(`No handler found for ${method} ${finalPathname}`);
   }
