@@ -15,7 +15,6 @@ import { Button } from "./button";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  //   const { isLoaded } = useSignIn()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,13 +25,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  //   if (!isLoaded) return null
-
   return (
     <nav
       className={`fixed z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "border-b border-[#1C2128] bg-[#0D1117]/80 backdrop-blur-md"
+          ? "border-[#1C2128] bg-[#0D1117]/80 backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
