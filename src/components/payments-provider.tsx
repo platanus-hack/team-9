@@ -38,10 +38,10 @@ export default function PaymentProviderSetup() {
 
   const saveTokenMutation = trpc.apiKey.create.useMutation();
 
-  const onSubmit: SubmitHandler<EncryptedToken> = async (data) => {
+  const onSubmit: SubmitHandler<EncryptedToken> = async () => {
     console.log(data);
     try {
-      //await saveTokenMutation.mutateAsync([data]);
+      await saveTokenMutation.mutateAsync();
       alert("Token guardado exitosamente");
     } catch (error) {
       console.error("Error al guardar el token:", error);
