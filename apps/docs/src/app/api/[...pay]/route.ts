@@ -1,37 +1,16 @@
 import { Core, createMercadoPagoIntegration } from "@rccpr/core";
-
-const mockData = {
-  id: "asdasda",
-  externalId: "asdasda",
-  serviceName: "mercadopago",
-  currency: "CLP",
-  baseUnit: 1000,
-  status: "PROCESSING",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-} as const;
+import { prismaAdapter } from "@rccpr/adapter-prisma";
+import { db } from "../../../server/db";
+import { env } from "../../../env";
 
 const core = new Core({
   basePath: "/api/pay",
   integrations: [
     createMercadoPagoIntegration({
-      accessToken: "sdada",
+      accessToken: env.MP_ACCESS_TOKEN,
     }),
   ],
-  adapter: {
-    async updatePaymentIntent(...args: any[]) {
-      return mockData;
-    },
-    async createPaymentIntent() {
-      return mockData;
-    },
-    async getOrderByExternalId(id: string) {
-      return mockData;
-    },
-    async getOrderById(id: string) {
-      return mockData;
-    },
-  },
+  adapter: prismaAdapter(db),
   config: {
     onApproved(data) {
       console.log(data);
