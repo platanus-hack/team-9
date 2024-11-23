@@ -9,10 +9,11 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import * as trpcNext from '@trpc/server/adapters/next'
-import { getAuth } from '@clerk/nextjs/server'
+import type * as trpcNext from "@trpc/server/adapters/next";
+import { getAuth } from "@clerk/nextjs/server";
 
 import { db } from "@/server/db";
+import { createClient } from "@/supabase/server";
 
 /**
  * 1. CONTEXT
@@ -27,10 +28,11 @@ import { db } from "@/server/db";
  * @see https://trpc.io/docs/server/context
  */
 
-export const createTRPCContext = async (opts: trpcNext.CreateNextContextOptions) => {
-  return { db, auth: getAuth(opts.req) }
-}
-
+export const createTRPCContext = async (
+  opts: trpcNext.CreateNextContextOptions,
+) => {
+  return { db, auth: getAuth(opts.req) };
+};
 
 /**
  * 2. INITIALIZATION
@@ -106,15 +108,20 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
-const isAuthed = t.middleware(({ next, ctx }) => {
-  if (!ctx.auth.userId) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' })
+export const protectedProcedure = t.procedure.use(async ({ next }) => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
-      auth: ctx.auth,
+      // infers the `user` as non-nullable
+      user,
     },
-  })
-})
-
-export const protectedProcedure = t.procedure.use(isAuthed);
+  });
+});
