@@ -38,13 +38,15 @@ class ApikeyService {
    * @param userId ID del usuario.
    * @returns El token o `null` si no existe.
    */
-  async getApiKey(userId: string): Promise<string | null> {
+  async getApiKey(
+    userId: string,
+  ): Promise<{ token: string; id: string; createdAt: Date } | null> {
     const apiKey = await db.apiKey.findFirst({
       where: { userId },
-      select: { token: true },
+      select: { token: true, id: true, createdAt: true },
     });
 
-    return apiKey?.token ?? null;
+    return apiKey ?? null;
   }
 
   /**

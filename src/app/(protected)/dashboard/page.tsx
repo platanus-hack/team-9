@@ -1,10 +1,20 @@
-import ApeKeyGenerated from "@/app/_components/apiKey/ApeKeyGenerated";
 import { Overview } from "@/components/overview";
-import PaymentProviderSetup from "@/components/payments-provider";
 import { RecentSales } from "@/components/recent-sales";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { createClient } from "@/supabase/server";
+import Link from "next/link";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  // Llamada asíncrona a Supabase en un componente de servidor
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+
+  // Asegúrate de manejar el caso en el que no haya un usuario
+  if (!data?.user) {
+    // En caso de que no haya un usuario, puedes redirigir o retornar algo como un 404
+    return <div>No user found.</div>;
+  }
+
   return (
     <div className="space-y-4">
       <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
@@ -122,8 +132,7 @@ export default function DashboardPage() {
             </CardContent>
           </CardHeader>
         </Card>
-        <PaymentProviderSetup />
-        <ApeKeyGenerated />
+        <Link href={`/dashboard/${data?.user?.id}/api-key`}>API Keys</Link>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ export const apiKeyRouter = createTRPCRouter({
       throw new Error("No se encontró un API key para este usuario.");
     }
 
-    return { token: apiKey };
+    return apiKey;
   }),
 
   /**
