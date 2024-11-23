@@ -20,7 +20,7 @@
     "node": ">=18"
   },
   "name": "with-changesets",
-  "packageManager": "bun@1.1.33",
+  "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
     "packages/*"
