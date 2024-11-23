@@ -1,209 +1,168 @@
-import { Copy } from 'lucide-react'
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card } from "@/components/ui/card"
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-export default function TutorialSteps() {
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import { FrameworkGrid } from "@/components/framework-grid";
+
+export default function Page() {
   return (
-    <div className="w-full max-w-5xl mx-auto p-4 space-y-8">
-      {/* Framework Navigation */}
-      <nav className="flex items-center gap-8 overflow-x-auto pb-4">
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
-          <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-xl">N</span>
-          </div>
-          <span className="text-sm">Next.js</span>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+      <div className="mx-auto max-w-5xl px-4 py-16">
+        <div className="text-center">
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
+            Get Started with Authentication
+          </h1>
+          <p className="text-lg text-gray-400">
+            Follow these steps to add authentication to your application
+          </p>
         </div>
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
-          <div className="w-12 h-12 bg-[#149ECA] bg-opacity-10 rounded-full flex items-center justify-center">
-            <Image
-              src="/placeholder.svg?height=24&width=24"
-              alt="React"
-              width={24}
-              height={24}
-              className="text-[#149ECA]"
-            />
-          </div>
-          <span className="text-sm">React</span>
-        </div>
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
-          <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
-            <span className="text-white font-bold">R</span>
-          </div>
-          <span className="text-sm">Remix</span>
-        </div>
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
-          <div className="w-12 h-12 bg-white border rounded-full flex items-center justify-center">
-            <span className="text-black font-bold">A</span>
-          </div>
-          <span className="text-sm">Astro</span>
-        </div>
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
-          <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
-            <span className="text-white">^</span>
-          </div>
-          <span className="text-sm">Expo</span>
-        </div>
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
-          <div className="w-12 h-12 bg-[#F7DF1E] rounded-full flex items-center justify-center">
-            <span className="text-black font-bold">JS</span>
-          </div>
-          <span className="text-sm">JavaScript</span>
-        </div>
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
-          <div className="w-12 h-12 bg-[#E99287] rounded-full flex items-center justify-center">
-            <Image
-              src="/placeholder.svg?height=24&width=24"
-              alt="TanStack"
-              width={24}
-              height={24}
-            />
-          </div>
-          <span className="text-sm">TanStack Start</span>
-        </div>
-      </nav>
 
-      {/* Tutorial Steps */}
-      <div className="space-y-12 relative">
-        {/* Step 1 */}
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center relative z-10">
-                <span className="text-sm font-medium text-blue-600">1</span>
-              </div>
-              <h2 className="text-xl font-semibold">Set up a React application using Vite</h2>
-            </div>
-            <p className="text-gray-600">Scaffold your new React application using Vite</p>
-          </div>
-          
-          <Card className="bg-gray-950 text-white p-4 rounded-lg">
-            <div className="space-y-4">
-              <Tabs defaultValue="npm">
-                <TabsList className="bg-transparent border-b border-gray-800">
-                  <TabsTrigger 
-                    value="npm" 
-                    className="text-gray-400 data-[state=active]:text-[#149ECA]"
-                  >
-                    npm
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="yarn"
-                    className="text-gray-400 data-[state=active]:text-[#149ECA]"
-                  >
-                    yarn
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="pnpm"
-                    className="text-gray-400 data-[state=active]:text-[#149ECA]"
-                  >
-                    pnpm
-                  </TabsTrigger>
+        <div className="mt-16 space-y-8">
+          <Card className="border-2 border-gray-800 bg-gray-900/50 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-sm">
+                  1
+                </span>
+                Choose your framework
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <FrameworkGrid />
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-gray-800 bg-gray-900/50 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-sm">
+                  2
+                </span>
+                Install the package
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="npm" className="w-full">
+                <TabsList className="grid w-full max-w-[400px] grid-cols-3">
+                  <TabsTrigger value="npm">npm</TabsTrigger>
+                  <TabsTrigger value="yarn">yarn</TabsTrigger>
+                  <TabsTrigger value="pnpm">pnpm</TabsTrigger>
                 </TabsList>
+                <TabsContent value="npm">
+                  <CodeBlock language="bash" code="npm install @clerk/nextjs" />
+                </TabsContent>
+                <TabsContent value="yarn">
+                  <CodeBlock language="bash" code="yarn add @clerk/nextjs" />
+                </TabsContent>
+                <TabsContent value="pnpm">
+                  <CodeBlock language="bash" code="pnpm add @clerk/nextjs" />
+                </TabsContent>
               </Tabs>
-              <div className="space-y-2 font-mono text-sm">
-                <div className="flex items-center justify-between group">
-                  <code>npm create vite@latest clerk-react -- --template react</code>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="opacity-0 group-hover:opacity-100"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between group">
-                  <code>cd clerk-react</code>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between group">
-                  <code>npm install</code>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between group">
-                  <code>npm run dev</code>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-gray-800 bg-gray-900/50 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-sm">
+                  3
+                </span>
+                Set up environment variables
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CodeBlock
+                language="bash"
+                code={`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_••••••••••••••••••••••••••••••••••
+CLERK_SECRET_KEY=sk_test_••••••••••••••••••••••••••••••••••`}
+              />
+              <p className="mt-4 text-sm text-gray-400">
+                Add these keys to your{" "}
+                <code className="rounded bg-gray-800 px-1">.env.local</code>{" "}
+                file
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-gray-800 bg-gray-900/50 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-sm">
+                  4
+                </span>
+                Update your middleware
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CodeBlock
+                language="typescript"
+                code={`import { authMiddleware } from "@clerk/nextjs";
+ 
+export default authMiddleware({
+  // Routes that can be accessed while signed out
+  publicRoutes: ["/"],
+  // Routes that can always be accessed
+  ignoredRoutes: ["/api/webhook"],
+});
+ 
+export const config = {
+  // Match all request paths except for the ones starting with:
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};`}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="relative overflow-hidden border-2 border-primary bg-gray-900/50 shadow-lg">
+            <div className="absolute inset-0 bg-primary/10" />
+            <CardHeader>
+              <CardTitle className="text-white">Ready to go!</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-300">
+                Your application is now set up with authentication. Run your
+                development server to see it in action.
+              </p>
+            </CardContent>
+            <CardFooter className="flex gap-4">
+              <Button size="lg" className="gap-2">
+                Run your app
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+              <Button variant="secondary" size="lg">
+                View documentation
+              </Button>
+            </CardFooter>
           </Card>
         </div>
 
-        {/* Connecting line */}
-        <div className="absolute left-4 top-8 w-px bg-blue-200 h-[calc(100%-2rem)]" style={{ transform: 'translateX(-50%)' }}></div>
-
-        {/* Step 2 */}
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center relative z-10">
-                <span className="text-sm font-medium text-blue-600">2</span>
-              </div>
-              <h2 className="text-xl font-semibold">Install <code className="text-sm bg-gray-100 px-1.5 py-0.5 rounded">@clerk/clerk-react</code></h2>
-            </div>
-            <p className="text-gray-600">The package to use with Clerk and React.</p>
+        <div className="mt-16 rounded-lg border border-gray-800 bg-gray-900/50 p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold text-white">Need help?</h2>
+          <p className="mb-6 text-gray-400">
+            Our documentation has everything you need to get started.
+          </p>
+          <div className="flex justify-center gap-4">
+            <Link href="#" className="text-primary hover:underline">
+              Documentation
+            </Link>
+            <Link href="#" className="text-primary hover:underline">
+              API Reference
+            </Link>
+            <Link href="#" className="text-primary hover:underline">
+              Support
+            </Link>
           </div>
-          
-          <Card className="bg-gray-950 text-white p-4 rounded-lg">
-            <div className="space-y-4">
-              <Tabs defaultValue="npm">
-                <TabsList className="bg-transparent border-b border-gray-800">
-                  <TabsTrigger 
-                    value="npm" 
-                    className="text-gray-400 data-[state=active]:text-[#149ECA]"
-                  >
-                    npm
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="yarn"
-                    className="text-gray-400 data-[state=active]:text-[#149ECA]"
-                  >
-                    yarn
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="pnpm"
-                    className="text-gray-400 data-[state=active]:text-[#149ECA]"
-                  >
-                    pnpm
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-              <div className="space-y-2 font-mono text-sm">
-                <div className="flex items-center justify-between group">
-                  <code>npm install @clerk/clerk-react</code>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
