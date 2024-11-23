@@ -1,0 +1,7 @@
+{
+  "*/**/*.ts|js": [
+    "validate-branch-name",
+    "eslint . --ext .ts",
+    "eslint . --ext .ts --fix"
+  ]
+}
