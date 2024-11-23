@@ -16,7 +16,7 @@ export class NextPaySdk {
     });
   }
 
-  getSupportedCurrencies = async () => {
+  getSupportedCurrencies = async (): Promise<SupportedCurrencies[]> => {
     const response = await this.axios.get<SupportedCurrencies[]>(
       "/general/supported_currencies"
     );
@@ -24,7 +24,9 @@ export class NextPaySdk {
     return response.data;
   };
 
-  getSupportedProviderForCurrency = async (currency: SupportedCurrencies) => {
+  getSupportedProviderForCurrency = async (
+    currency: SupportedCurrencies
+  ): Promise<string[]> => {
     const response = await this.axios.get<string[]>(
       `/general/supported_services/${currency}`
     );
@@ -44,7 +46,7 @@ export class NextPaySdk {
     amount: string | number;
     referenceId: string;
     name?: string;
-  }) => {
+  }): Promise<PaymentIntentOutput> => {
     const serviceString = String(service);
     const response = await this.axios.post<PaymentIntentOutput>(
       `/integration/${serviceString}/create_request`,
