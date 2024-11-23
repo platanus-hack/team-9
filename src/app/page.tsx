@@ -1,6 +1,7 @@
 import PaymentProviderSetup from '@/components/payments-provider'
 import { Stepper } from '@/components/stepper'
 import { Button } from '@/components/ui/button'
+import Navbar from '@/components/ui/navbar'
 import { ArrowRight } from 'lucide-react'
 
 export default function LandingPage() {
@@ -8,6 +9,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#0D1117] text-white relative overflow-hidden">
       {/* Background effects */}
+      <Navbar />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#234458,#0D1117_50%)]" />
       <div 
         className="absolute inset-0" 
