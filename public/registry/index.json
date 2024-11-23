@@ -1,0 +1,14 @@
+[
+  {
+    "name": "payment-component",
+    "dependencies": [
+      "react-toastify"
+    ],
+    "registryDependencies": [
+      "payment-action",
+      "payment-ui",
+      "alert-dialog"
+    ],
+    "type": "components:ui"
+  }
+]
