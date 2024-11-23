@@ -10,7 +10,7 @@ enum SupportedHTTPMethod {
 }
 
 const isSupportedHTTPMethod = (method: string): method is SupportedHTTPMethod =>
-  z.nativeEnum(SupportedHTTPMethod).safeParse(method).success;
+  z.enum(SupportedHTTPMethod).safeParse(method).success;
 
 export type RccprHandler = (ctx: {
   req: RequestInternal;
@@ -18,12 +18,22 @@ export type RccprHandler = (ctx: {
   originalRequest: Request;
 }) => ResponseInternal | Promise<ResponseInternal>;
 
-export class Whatever {
-  router = new TrieRouter<RccprHandler>();
+type InternalOptions = {
+  basePath?: string;
+};
 
-  processRequest = async (
-    req: Request,
-    basePath?: string
+export class RequestHandler {
+  router = new TrieRouter<RccprHandler>();
+  basePath?: string;
+
+  constructor(options?: InternalOptions) {
+    if (options?.basePath) {
+      this.basePath = options?.basePath;
+    }
+  }
+
+  requestToInternalResponse = async (
+    req: Request
   ): Promise<ResponseInternal> => {
     const url = new URL(req.url.replace(/\/$/, ""));
     const { pathname } = url;
@@ -34,7 +44,9 @@ export class Whatever {
 
     const method = req.method;
 
-    const finalPathname = basePath ? pathname.replace(basePath, "") : pathname;
+    const finalPathname = this.basePath
+      ? pathname.replace(this.basePath, "")
+      : pathname;
 
     const [match] = this.router.match(method, finalPathname);
     if (match.length === 0) {
@@ -57,5 +69,48 @@ export class Whatever {
       params,
       originalRequest: req,
     });
+  };
+
+  toResponse(res: ResponseInternal): Response {
+    const headers = new Headers(res.headers);
+
+    res.cookies?.forEach((cookie) => {
+      const { name, value, options } = cookie;
+      const cookieHeader = serialize(name, value, options);
+
+      if (headers.has("Set-Cookie")) {
+        headers.append("Set-Cookie", cookieHeader);
+      } else {
+        headers.set("Set-Cookie", cookieHeader);
+      }
+    });
+
+    const body =
+      headers.get("content-type") === "application/json"
+        ? JSON.stringify(res.body)
+        : res.body;
+
+    const response = new Response(body, {
+      headers,
+      status: res.redirect ? 302 : (res.status ?? 200),
+    });
+
+    if (res.redirect) {
+      response.headers.set("Location", res.redirect);
+    }
+
+    return response;
+  }
+
+  processRequest = async (request: Request): Promise<Response> => {
+    try {
+      const internalResponse = await this.requestToInternalResponse(request);
+      return this.toResponse(internalResponse);
+    } catch (error) {
+      return new Response(
+        `Error: There was an error while processing your request.`,
+        { status: 400 }
+      );
+    }
   };
 }
