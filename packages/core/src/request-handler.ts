@@ -10,7 +10,7 @@ enum SupportedHTTPMethod {
 }
 
 const isSupportedHTTPMethod = (method: string): method is SupportedHTTPMethod =>
-  z.enum(SupportedHTTPMethod).safeParse(method).success;
+  z.nativeEnum(SupportedHTTPMethod).safeParse(method).success;
 
 export type RccprHandler = (ctx: {
   req: RequestInternal;
