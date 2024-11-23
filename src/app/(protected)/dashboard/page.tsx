@@ -1,3 +1,4 @@
+import ApeKeyGenerated from "@/app/_components/apiKey/ApeKeyGenerated";
 import { Overview } from "@/components/overview";
 import PaymentProviderSetup from "@/components/payments-provider";
 import { RecentSales } from "@/components/recent-sales";
@@ -121,8 +122,8 @@ export default function DashboardPage() {
             </CardContent>
           </CardHeader>
         </Card>
-                  <PaymentProviderSetup/>
-
+        <PaymentProviderSetup />
+        <ApeKeyGenerated />
       </div>
     </div>
   );

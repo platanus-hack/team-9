@@ -1,119 +1,88 @@
-import {
-  apikeysType,
-  type EncryptedToken,
-  type EncryptedTokens,
-} from "@/components/payments-provider";
 import { db } from "@/server/db";
-import { sha256 } from "@oslojs/crypto/sha2";
-import {
-  encodeBase32LowerCaseNoPadding,
-  encodeHexLowerCase,
-  decodeBase32,
-  decodeHex,
-} from "@oslojs/encoding";
-import { type ProviderToken } from "@prisma/client";
-import { type ValidatedProviderTokenType } from "./apikey.model";
+import { encodeBase32LowerCaseNoPadding } from "@oslojs/encoding";
 
 class ApikeyService {
   /**
    * Genera una API key en formato Base32 sin padding.
    */
-  generateApikeyToken(): string {
+  generateApiKeyToken(): string {
     const bytes = new Uint8Array(20);
     crypto.getRandomValues(bytes);
     return encodeBase32LowerCaseNoPadding(bytes);
   }
 
   /**
-   * Genera un token para el proveedor basado en un hash SHA-256 y lo codifica en Hex.
+   * Crea un API key asociado a un usuario, si no tiene uno existente.
+   * @param userId ID del usuario.
    */
-  generateProviderTokens(
-    providerToken: EncryptedToken,
-  ): ProviderToken["token"] {
-    return encodeHexLowerCase(
-      sha256(new TextEncoder().encode(JSON.stringify(providerToken))),
-    );
-  }
-
-  /**
-   * Crea registros para múltiples tokens de proveedor en la base de datos.
-   */
-  async createProviders(
-    encryptedTokens: EncryptedTokens,
-    userId: ProviderToken["userId"],
-  ): Promise<void> {
-    const data = encryptedTokens.map((provider) => ({
-      userId,
-      providerName: provider.provider,
-      token: this.generateProviderTokens(provider),
-    }));
-    await db.providerToken.createMany({ data });
-  }
-
-  /**
-   * Convierte un Uint8Array en string (usado para decodificaciones).
-   */
-  private uint8ArrayToString(array: Uint8Array): string {
-    return new TextDecoder().decode(array);
-  }
-
-  /**
-   * Valida si un usuario es el propietario de una API key.
-   */
-  async validateIsUserOwner(userId: string, apikey: string): Promise<boolean> {
-    // Decodifica la apikey desde Base32
-    const decodedApikey = decodeBase32(apikey);
-    if (!decodedApikey) {
-      throw new Error("Invalid apikey");
-    }
-
-    const decodedString = this.uint8ArrayToString(decodedApikey);
-
-    // Busca la API key en la base de datos
-    const isOwnerApikey = await db.apiKey.findFirst({
-      where: { userId, token: decodedString },
+  async createApiKeyToken(userId: string): Promise<void> {
+    const existingApiKey = await db.apiKey.findFirst({
+      where: { userId },
     });
 
-    if (!isOwnerApikey) {
-      throw new Error("Invalid user for apikey");
+    if (existingApiKey) {
+      return; // Si ya tiene un API key, no se crea uno nuevo.
     }
 
-    return true;
-  }
-
-  /**
-   * Valida el token del proveedor y realiza el decode desde Hex para obtener el token original.
-   */
-  async validateProviderToken(
-    input: ValidatedProviderTokenType,
-  ): Promise<EncryptedTokens | null> {
-    // Valida si el usuario es propietario de la API key
-    await this.validateIsUserOwner(input.userId, input.apikey);
-
-    // Busca un token activo del proveedor
-    const providerTokens = await db.providerToken.findMany({
-      where: { active: true, userId: input.userId },
-    });
-
-    if (!providerTokens) {
-      return null;
-    }
-    const parsedTokens = providerTokens.map(
-      ({ token, providerName }) => {
-        const decodedToken = decodeHex(token);
-        const decodedString = this.uint8ArrayToString(decodedToken);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const anyForm = JSON.parse(decodedString);
-        return apikeysType.parse({
-          ...anyForm,
-          provider: providerName,
-        });
+    const token = this.generateApiKeyToken();
+    await db.apiKey.create({
+      data: {
+        userId,
+        token,
       },
+    });
+  }
 
-      // Decodifica el token desde Hex y retorna como string
-    );
-    return parsedTokens;
+  /**
+   * Obtiene el API key de un usuario.
+   * @param userId ID del usuario.
+   * @returns El token o `null` si no existe.
+   */
+  async getApiKey(userId: string): Promise<string | null> {
+    const apiKey = await db.apiKey.findFirst({
+      where: { userId },
+      select: { token: true },
+    });
+
+    return apiKey?.token ?? null;
+  }
+
+  /**
+   * Elimina el API key asociado a un usuario.
+   * @param userId ID del usuario.
+   * @returns `true` si se elimina correctamente, `false` si no existe.
+   */
+  async deleteApiKey(userId: string): Promise<boolean> {
+    const deleted = await db.apiKey.deleteMany({
+      where: { userId },
+    });
+
+    return deleted.count > 0; // Devuelve true si se eliminó al menos un registro.
+  }
+
+  /**
+   * Reemplaza el API key existente por uno nuevo.
+   * @param userId ID del usuario.
+   * @returns El nuevo token generado.
+   */
+  async rollKey(userId: string): Promise<string> {
+    const existingApiKey = await db.apiKey.findFirst({
+      where: { userId },
+    });
+
+    if (!existingApiKey) {
+      throw new Error("No se encontró un API key para este usuario.");
+    }
+
+    const newToken = this.generateApiKeyToken();
+
+    await db.apiKey.update({
+      where: { id: existingApiKey.id },
+      data: { token: newToken },
+    });
+
+    return newToken;
   }
 }
 
-export const apikeyService = new ApikeyService();
+export const apiKeyService = new ApikeyService();

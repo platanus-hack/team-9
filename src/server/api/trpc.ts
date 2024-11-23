@@ -9,8 +9,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import type * as trpcNext from "@trpc/server/adapters/next";
-import { getAuth } from "@clerk/nextjs/server";
 
 import { db } from "@/server/db";
 import { createClient } from "@/supabase/server";
@@ -27,11 +25,11 @@ import { createClient } from "@/supabase/server";
  *
  * @see https://trpc.io/docs/server/context
  */
-
-export const createTRPCContext = async (
-  opts: trpcNext.CreateNextContextOptions,
-) => {
-  return { db, auth: getAuth(opts.req) };
+export const createTRPCContext = async (opts: { headers: Headers }) => {
+  return {
+    db,
+    ...opts,
+  };
 };
 
 /**
