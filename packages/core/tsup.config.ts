@@ -9,5 +9,6 @@ export default defineConfig({
   },
   format: ["cjs", "esm"],
   external: ["react"],
+  noExternal: ["@rccpr/trie-router"],
   dts: true,
 });

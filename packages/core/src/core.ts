@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TrieRouter } from "../../trie-router/dist";
 
 enum SupportedHTTPMethod {
   GET = "GET",
@@ -22,3 +23,7 @@ export const processRequest = async (req: Request, basePath?: string) => {
 
   return pathname;
 };
+
+const router = new TrieRouter<string>();
+
+router.add("GET", "/hello", "Hello, world!");
