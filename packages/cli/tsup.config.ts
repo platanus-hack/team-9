@@ -1,9 +1,10 @@
 import { defineConfig } from "tsup";
 
-export default defineConfig({
+export default defineConfig((options) => ({
   entry: ["src/index.ts"],
-  format: ["esm"],
-  target: "node20",
+  format: ["cjs"],
+  target: "node14",
+  minify: !options.watch,
   clean: true,
   outDir: "dist",
-});
+}));
