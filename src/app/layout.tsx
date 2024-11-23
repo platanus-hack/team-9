@@ -10,10 +10,10 @@ import {
 
 import { TRPCReactProvider } from "@/trpc/react"
 import { ClerkProvider } from "@clerk/nextjs"
+import Navbar from "@/components/ui/navbar"
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
 })
 
 export const metadata = {
@@ -30,18 +30,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider>
-        <body className={`font-sans ${inter.variable}`}>
+        <body className={inter.className}>
           <TRPCReactProvider>
+            <Navbar />
             {children}
             <body>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          {children}
-        </body>
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </body>
           </TRPCReactProvider>
         </body>
       </ClerkProvider>
