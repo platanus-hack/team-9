@@ -29,6 +29,7 @@ export type WithTransactionCallback<T, TransactionCTX> = (
 type PlaceholderCTX = { __type: "PlaceholderCTX" };
 
 abstract class Data<TransactionCTX = PlaceholderCTX> {
+  /* no transaction support yet
   public abstract callWithCtx<T>(
     callback: WithTransactionCallback<T, TransactionCTX>
   ): Promise<T>;
@@ -37,6 +38,8 @@ abstract class Data<TransactionCTX = PlaceholderCTX> {
   ): Promise<T> {
     return this.callWithCtx(callback);
   }
+
+  */
 
   async createPaymentIntent(
     value: CreatePaymentParams,

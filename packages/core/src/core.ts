@@ -27,7 +27,7 @@ type IntegrationConfigContextType =
 type InternalOptions = {
   basePath?: string;
   integrations: Integrations;
-  dataService: DataServiceType;
+  adapter: DataServiceType;
   config: IntegrationConfigContextType;
 };
 
@@ -56,7 +56,7 @@ export class Core {
     this.integrations = options.integrations;
     this.dataServiceLive = Layer.succeed(
       DataService,
-      DataService.of(options.dataService)
+      DataService.of(options.adapter)
     );
     this.configLive = Layer.succeed(
       IntegrationConfigContext,

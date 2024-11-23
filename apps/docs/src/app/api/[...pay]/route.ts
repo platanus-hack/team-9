@@ -18,15 +18,9 @@ const core = new Core({
       accessToken: "sdada",
     }),
   ],
-  dataService: {
+  adapter: {
     async updatePaymentIntent(...args: any[]) {
       return mockData;
-    },
-    callWithCtx(callback) {
-      return callback({ __type: "PlaceholderCTX" });
-    },
-    async startTransaction(callback) {
-      return callback({ __type: "PlaceholderCTX" });
     },
     async createPaymentIntent() {
       return mockData;
