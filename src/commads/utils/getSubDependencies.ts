@@ -1,12 +1,13 @@
-import { registrySchema, registryWithContentSchema } from "../validations";
-import { fetchRegistry } from "./fetchRegistry";
+import { registryWithContentSchema } from "@/commads/validations";
+import { fetchRegistry } from "@/commads/utils";
+import { handleErrors } from "@/utils";
 
 export const getSubDependencies = async (paths: string[]) => {
   try {
     const response = await fetchRegistry(paths);
     return registryWithContentSchema.parse(response);
   } catch (error) {
-    console.log(error);
-    throw new Error("Failed to fetch registry");
+    handleErrors("Failed to connect to the components library.");
+    process.exit(0);
   }
 };

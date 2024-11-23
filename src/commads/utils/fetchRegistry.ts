@@ -1,3 +1,5 @@
+import { handleErrors } from "@/utils";
+
 export const fetchRegistry = async (paths: string[]) => {
   try {
     const results = await Promise.all(
@@ -9,7 +11,7 @@ export const fetchRegistry = async (paths: string[]) => {
 
     return results;
   } catch (error) {
-    console.error(error);
-    throw new Error("Failed to fetch registry");
+    handleErrors("Failed to connect to the components library.");
+    process.exit(0);
   }
 };
