@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { TrieRouter } from "../../trie-router/dist";
+import { TrieRouter, Params, ParamIndexMap } from "@rccpr/trie-router";
+import { RequestInternal, ResponseInternal } from "./internal.types";
+import { readJSONBody } from "./http.helpers";
+import { parse as parseCookie, serialize } from "cookie";
 
 enum SupportedHTTPMethod {
   GET = "GET",
@@ -9,21 +12,50 @@ enum SupportedHTTPMethod {
 const isSupportedHTTPMethod = (method: string): method is SupportedHTTPMethod =>
   z.nativeEnum(SupportedHTTPMethod).safeParse(method).success;
 
-export const processRequest = async (req: Request, basePath?: string) => {
-  const url = new URL(req.url.replace(/\/$/, ""));
-  const { pathname } = url;
+export type RccprHandler = (ctx: {
+  req: RequestInternal;
+  params: Params | ParamIndexMap;
+  originalRequest: Request;
+}) => ResponseInternal | Promise<ResponseInternal>;
 
-  if (!isSupportedHTTPMethod(req.method)) {
-    throw new Error(`Unsupported HTTP method: ${req.method}`);
-  }
+export class Whatever {
+  router = new TrieRouter<RccprHandler>();
 
-  const method = req.method;
+  processRequest = async (
+    req: Request,
+    basePath?: string
+  ): Promise<ResponseInternal> => {
+    const url = new URL(req.url.replace(/\/$/, ""));
+    const { pathname } = url;
 
-  const finalPathname = basePath ? pathname.replace(basePath, "") : pathname;
+    if (!isSupportedHTTPMethod(req.method)) {
+      throw new Error(`Unsupported HTTP method: ${req.method}`);
+    }
 
-  return pathname;
-};
+    const method = req.method;
 
-const router = new TrieRouter<string>();
+    const finalPathname = basePath ? pathname.replace(basePath, "") : pathname;
 
-router.add("GET", "/hello", "Hello, world!");
+    const [match] = this.router.match(method, finalPathname);
+    if (match.length === 0) {
+      throw new Error(`No handler found for ${method} ${finalPathname}`);
+    }
+
+    const [handler, params] = match[0];
+    const internal = {
+      url,
+      method,
+      headers: Object.fromEntries(req.headers as any),
+      body: req.body ? await readJSONBody(req.body) : undefined,
+      cookies: parseCookie(req.headers.get("cookie") ?? "") ?? {},
+      error: url.searchParams.get("error") ?? undefined,
+      query: Object.fromEntries(url.searchParams),
+    };
+
+    return handler({
+      req: internal,
+      params,
+      originalRequest: req,
+    });
+  };
+}

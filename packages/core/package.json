@@ -25,10 +25,11 @@
     "typescript": "5.5.4"
   },
   "dependencies": {
+    "@rccpr/trie-router": "*",
+    "cookie": "^1.0.2",
     "effect": "^3.10.16",
     "react": "^18.2.0",
     "ts-pattern": "^5.5.0",
-    "@rccpr/trie-router": "*",
     "zod": "^3.23.8"
   },
   "publishConfig": {
