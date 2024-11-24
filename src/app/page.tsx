@@ -1,53 +1,99 @@
-import Link from "next/link";
+import { Stepper } from "@/components/stepper";
+import { Button } from "@/components/ui/button";
+import Navbar from "@/components/ui/navbar";
 
-import { LatestPost } from "@/app/_components/post";
-import { api, HydrateClient } from "@/trpc/server";
-
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-
-  void api.post.getLatest.prefetch();
-
+export default function LandingPage() {
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
-          </div>
+    <div className="relative min-h-screen overflow-hidden bg-[#0D1117] text-white">
+      {/* Background effects */}
+      <Navbar />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#234458,#0D1117_50%)]" />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 1px)`,
+          backgroundSize: "30px 30px",
+        }}
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(0,255,163,0.1),transparent_25%)]" />
 
-          <LatestPost />
-        </div>
-      </main>
-    </HydrateClient>
+      {/* Content */}
+      <div className="relative">
+        {/* Hero Section */}
+        <section className="mx-auto max-w-7xl px-4 pb-20 pt-32 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-between gap-12 lg:flex-row">
+            <div className="flex-1 text-left">
+              <h1 className="mb-8 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+                Payment Integration
+                <br />
+                For{" "}
+                <span className="relative">
+                  All
+                  <span className="absolute -right-4 top-0 h-full w-2 bg-[#00FFA3]" />
+                </span>
+                <br />
+                Applications
+              </h1>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  size="lg"
+                  className="rounded-full border-2 border-[#00FFA3] bg-transparent px-8 py-6 text-lg text-[#00FFA3] hover:bg-[#00FFA3]/10"
+                >
+                  Get Started For Free
+                </Button>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="rounded-full bg-[#1C2128] px-8 py-6 text-lg text-white hover:bg-[#1C2128]/80"
+                >
+                  Talk to Us
+                </Button>
+              </div>
+            </div>
+            <div className="relative flex-1">
+              <div className="relative aspect-square w-full">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,163,0.2),transparent_70%)]" />
+                <img
+                  src="/placeholder.svg"
+                  alt="Hero illustration"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Logos Section */}
+        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 items-center justify-items-center gap-12 opacity-60 md:grid-cols-4">
+            {[
+              "KIN",
+              "OpenStatus",
+              "TRIP TO JAPAN",
+              "re:tune",
+              "Prisma",
+              "Drizzle ORM",
+              "FERMYON",
+              "val town",
+            ].map((logo) => (
+              <div
+                key={logo}
+                className="whitespace-nowrap text-xl font-bold text-white"
+              >
+                {logo}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Integration Section */}
+        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-3xl font-bold">
+            Quick Integration Steps
+          </h2>
+          <Stepper />
+        </section>
+      </div>
+    </div>
   );
 }

@@ -11,10 +11,35 @@ datasource db {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
+    id        String      @id @default(nanoid())
     name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([name])
+}
+model ApiKey {
+    id          String      @id @default(nanoid())
+    token       String
+    userId      String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@index([token])
+}
+model ProviderToken {
+    id                      String      @id @default(nanoid())
+    token                   String
+    providerName            ProviderName
+    active                  Boolean?     @default(true)
+    userId                  String
+    createdAt               DateTime @default(now())
+    updatedAt               DateTime @updatedAt
+
+    @@index([token, userId])
+}
+
+enum ProviderName {
+  FINTOC
+  MERCADOPAGO
 }
