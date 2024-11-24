@@ -49,6 +49,7 @@ export const createFintocIntegration = (config: FintocConfig) => {
     IntegrationDetail,
     IntegrationDetail.of({
       name,
+      supportedCurrencies: ["CLP", "MXN"],
       getPaymentIntentStatus(paymentIntentId: string) {
         return Effect.gen(function* () {
           return {} as any;

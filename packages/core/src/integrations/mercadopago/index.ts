@@ -59,6 +59,7 @@ export const createMercadoPagoIntegration = (
     IntegrationDetail,
     IntegrationDetail.of({
       name,
+      supportedCurrencies: ["CLP"],
       getPaymentIntentStatus(paymentIntentId: string) {
         return Effect.gen(function* () {
           const accessToken = yield* Effect.promise(() =>

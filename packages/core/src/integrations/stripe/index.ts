@@ -404,6 +404,7 @@ export const createStripeIntegration = (config: StripeConfig) => {
     IntegrationDetail,
     IntegrationDetail.of({
       name,
+      supportedCurrencies: ["USD"],
       getPaymentIntentStatus(paymentIntentId: string) {
         return Effect.gen(function* () {
           return {} as any;

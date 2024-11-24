@@ -35,7 +35,9 @@ type Detail = {
     status: PaymentIntentStatus;
   }>;
   internalRoutes?: [SupportedHTTPMethod, string, RccprHandler][];
+  supportedCurrencies: SupportedCurrencies[];
 };
+
 export class IntegrationDetail extends Context.Tag(
   "@rccpr/internal/integration-detail"
 )<IntegrationDetail, Detail>() {}
@@ -225,6 +227,7 @@ const IntegrationLive = Layer.effect(
       handleWebhookRequest: details.handleWebhookRequest,
       internalRoutes: details.internalRoutes,
       name: details.name,
+      supportedCurrencies: details.supportedCurrencies,
       onRejected,
       onApproved,
       onPending,
