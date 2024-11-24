@@ -4,6 +4,9 @@
   "description": "CLI project",
   "index": "dist/index.js",
   "main": "dist/index.js",
+  "bin": {
+    "cli": "./dist/index.js"
+  },
   "type": "module",
   "files": [
     "dist"
