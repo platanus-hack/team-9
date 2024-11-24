@@ -1,9 +1,12 @@
 import { Console, Context, Effect, Either, Layer } from "effect";
-import { PaymentIntentStatus, SupportedCurrencies } from "../constants";
+import {
+  PaymentIntentStatus,
+  SupportedCurrencies,
+  SupportedHTTPMethod,
+} from "../constants";
 import { DataService, PaymentIntent } from "../services/data.service";
-import { RccprHandler, RequestInternal } from "../internal.types";
+import type { RccprHandler, RequestInternal } from "../internal.types";
 import { match } from "ts-pattern";
-import type { TrieRouter } from "@rccpr/trie-router";
 
 export type PaymentIntentOutput = { id: string; link: string };
 
@@ -31,7 +34,7 @@ type Detail = {
   getPaymentIntentStatus(paymentIntentId: string): Effect.Effect<{
     status: PaymentIntentStatus;
   }>;
-  addInternalRoutes?: (router: TrieRouter<RccprHandler>) => void;
+  internalRoutes?: [SupportedHTTPMethod, string, RccprHandler][];
 };
 export class IntegrationDetail extends Context.Tag(
   "@rccpr/internal/integration-detail"
@@ -220,6 +223,7 @@ const IntegrationLive = Layer.effect(
           return yield* details.getPaymentIntentStatus(paymentIntentId);
         }),
       handleWebhookRequest: details.handleWebhookRequest,
+      internalRoutes: details.internalRoutes,
       name: details.name,
       onRejected,
       onApproved,

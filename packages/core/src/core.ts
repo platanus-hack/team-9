@@ -9,16 +9,15 @@ import { RccprHandler } from "./internal.types";
 import { SupportedCurrencies, SupportedHTTPMethod } from "./constants";
 import z from "zod";
 import { processRequest } from "./request-handler";
+import { cons } from "effect/List";
 
-type Integrations = [
-  {
-    [T in string]: Layer.Layer<
-      Integration,
-      never,
-      DataService | IntegrationConfigContext
-    >;
-  },
-];
+type Integrations = {
+  [T in string]: Layer.Layer<
+    Integration,
+    never,
+    DataService | IntegrationConfigContext
+  >;
+}[];
 
 export type DataServiceType = Context.Tag.Service<DataService>;
 type IntegrationConfigContextType =
@@ -79,6 +78,7 @@ export class Core {
       );
 
       this.addIntegration(integrationName, newLive);
+      this.addInternalRoutes(newLive);
     }
   }
 
@@ -161,7 +161,30 @@ export class Core {
       }
     );
   };
+
+  private addInternalRoutes = (integrationLive: Layer.Layer<Integration>) => {
+    try {
+      const router = this.router;
+      console.log("Adding internal routes");
+      const program = Effect.gen(function* () {
+        console.log("getting integration");
+        const integration = yield* Integration;
+        console.log({ integration });
+
+        integration.internalRoutes?.forEach(([method, path, handler]) => {
+          console.log({ method, path });
+          router.add(method, path, handler);
+        });
+      });
+      const runnable = Effect.provide(program, integrationLive);
+
+      return Effect.runPromise(runnable);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   processRequest = async (req: Request) => {
+    console.log("Processing request");
     return processRequest(this.router, req, this.basePath);
   };
 }

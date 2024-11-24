@@ -1,4 +1,5 @@
 export { createMercadoPagoIntegration } from "./integrations/mercadopago";
+export { createStripeIntegration } from "./integrations/stripe";
 
 export * from "./core";
 

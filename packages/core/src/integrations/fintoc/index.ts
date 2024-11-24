@@ -82,17 +82,17 @@ export const createFintocIntegration = (config: FintocConfig) => {
       handleWebhookRequest: (originalRequest, req) => {
         return {} as any;
       },
-      addInternalRoutes: (router) => {
-        router.add(
+      internalRoutes: [
+        [
           SupportedHTTPMethod.GET,
           `/integration/${name}/internal/fintoc-html`,
-          ({ params }) => {
+          ({ req }) => {
             const { sessionToken, publicKey } = z
               .object({
                 sessionToken: z.string(),
                 publicKey: z.string(),
               })
-              .parse(params);
+              .parse(req.query);
 
             const html = fintocHTML({
               sessionToken,
@@ -109,9 +109,9 @@ export const createFintocIntegration = (config: FintocConfig) => {
                 "Content-Type": "text/html",
               },
             };
-          }
-        );
-      },
+          },
+        ],
+      ],
     })
   );
 

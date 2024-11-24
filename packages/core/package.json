@@ -29,10 +29,12 @@
   "dependencies": {
     "@effect/platform": "^0.69.25",
     "@rccpr/trie-router": "*",
+    "@stripe/react-stripe-js": "^3.0.0",
     "axios": "^1.7.7",
     "cookie": "^1.0.2",
     "effect": "^3.10.16",
     "react": "^18.2.0",
+    "stripe": "^17.4.0",
     "ts-pattern": "^5.5.0",
     "zod": "^3.23.8"
   },
