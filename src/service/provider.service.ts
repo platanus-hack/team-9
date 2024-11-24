@@ -1,6 +1,5 @@
 import { db } from "@/server/db";
-import { sha256 } from "@oslojs/crypto/sha2";
-import { encodeHexLowerCase, decodeBase32, decodeHex, encodeBase32 } from "@oslojs/encoding";
+import { decodeBase32, encodeBase32 } from "@oslojs/encoding";
 import { type ProviderName, type ProviderToken } from "@prisma/client";
 import { EncryptedToken, EncryptedTokens, ValidatedProviderTokenType, apikeysType } from "./apikey.model";
 
