@@ -1,5 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { apiKeyService } from "@/service/apiKey.service";
+import { apiKeyService } from "@/service/apikey.service";
 
 export const apiKeyRouter = createTRPCRouter({
   /**

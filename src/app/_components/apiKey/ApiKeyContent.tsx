@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
 import * as React from "react";
@@ -23,23 +24,24 @@ export function ApiKeysContent() {
   const { mutateAsync: rollApiKey } = trpc.apiKey.roll.useMutation();
   const { mutateAsync: deleteApiKey } = trpc.apiKey.delete.useMutation();
 
-  const formattedDate = dayjs(apiKeys?.createdAt ?? new Date()).format(
-    "MMM DD, YYYY, hh:mm A",
-  );
+  const date = apiKeys?.createdAt ?? new Date();
+
+  const formattedDate = dayjs(date).format("MMM DD, YYYY, hh:mm A");
   // Mutación para generar una nueva API key
-  const {mutateAsync: createApiKeyMutation} = trpc.apiKey.create.useMutation();
-  
+  const { mutateAsync: createApiKeyMutation } =
+    trpc.apiKey.create.useMutation();
+
   const handleGenerateKey = () => {
     toast.promise(
       (async () => {
         await createApiKeyMutation(), // Llamas a la mutación para cambiar la API key
-        await utils.apiKey.get.refetch();
+          await utils.apiKey.get.refetch();
       })(),
       {
-    loading: "Generando API Key...",
-    success: "API Key creada exitosamente.",
-    error: "Error al generar API Key",
-  },
+        loading: "Generando API Key...",
+        success: "API Key creada exitosamente.",
+        error: "Error al generar API Key",
+      },
     );
   };
   const copyToClipboard = async (text: string) => {
@@ -55,27 +57,28 @@ export function ApiKeysContent() {
     toast.promise(
       (async () => {
         await rollApiKey(), // Llamas a la mutación para cambiar la API key
-        await utils.apiKey.get.refetch();
+          await utils.apiKey.get.refetch();
       })(),
       {
         loading: "Rolling the API Key...",
         success: "API Key rolled successfully!",
         error: "Failed to roll the API Key",
-      }
-    )
+      },
+    );
   };
 
   const handleDeleteKey = () => {
     toast.promise(
       (async () => {
         await deleteApiKey(), // Llamas a la mutación para borrar la API key
-        await utils.apiKey.get.refetch();
+          await utils.apiKey.get.refetch();
       })(),
       {
         loading: "Deleting the API Key...",
         success: "API Key deleted successfully!",
         error: "Failed to delete the API Key",
-      })
+      },
+    );
   };
 
   return (
@@ -115,10 +118,7 @@ export function ApiKeysContent() {
       <div>
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Standard Keys</h2>
-          <Button
-            variant="outline"
-            onClick={handleGenerateKey}
-          >
+          <Button variant="outline" onClick={handleGenerateKey}>
             Create new key
           </Button>
         </div>
@@ -128,51 +128,51 @@ export function ApiKeysContent() {
             <div>Created</div>
             <div className="text-right">Actions</div>
           </div>
-          {apiKeys &&
-          <div className="border-t">
-            <div
-              className="grid grid-cols-3 gap-4 p-4"
-              key={apiKeys?.id ?? "N/A"}
-            >
-              <div className="flex items-center gap-2">
-                <span className="font-mono">{apiKeys?.token}</span>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => copyToClipboard(apiKeys?.token ?? "")}
-                >
-                  <Eye className="h-4 w-4" />
-                </Button>
-              </div>
-              <div>{formattedDate}</div>
-              <div className="flex justify-end">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="ghost">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => copyToClipboard(apiKeys?.token ?? "")}
-                    >
-                      Copy key
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleRollKey()}>
-                      Roll key
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-destructive"
-                      onClick={() => handleDeleteKey()}
-                    >
-                      Delete key
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+          {apiKeys && (
+            <div className="border-t">
+              <div
+                className="grid grid-cols-3 gap-4 p-4"
+                key={apiKeys?.id ?? "N/A"}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-mono">{apiKeys?.token}</span>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(apiKeys?.token ?? "")}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div>{formattedDate}</div>
+                <div className="flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={() => copyToClipboard(apiKeys?.token ?? "")}
+                      >
+                        Copy key
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleRollKey()}>
+                        Roll key
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-destructive"
+                        onClick={() => handleDeleteKey()}
+                      >
+                        Delete key
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             </div>
-          </div>   
-          }
+          )}
         </div>
       </div>
     </div>
