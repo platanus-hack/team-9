@@ -1,32 +1,28 @@
-import Image from "next/image"
+/* eslint-disable @next/next/no-img-element */
 
 const frameworks = [
   {
     name: "Next.js",
-    logo: "/placeholder.svg?height=60&width=60",
+    logo: "/assets/nextjs.svg?height=60&width=60",
     selected: true,
   },
   {
     name: "React",
-    logo: "/placeholder.svg?height=60&width=60",
+    logo: "/assets/react.svg?height=60&width=60",
   },
   {
     name: "Remix",
-    logo: "/placeholder.svg?height=60&width=60",
+    logo: "/assets/remix.svg?height=60&width=60",
   },
   {
     name: "Astro",
-    logo: "/placeholder.svg?height=60&width=60",
+    logo: "/assets/astro.svg?height=60&width=60",
   },
   {
-    name: "Expo",
-    logo: "/placeholder.svg?height=60&width=60",
+    name: "Node",
+    logo: "/assets/react.svg?height=60&width=60",
   },
-  {
-    name: "JavaScript",
-    logo: "/placeholder.svg?height=60&width=60",
-  },
-]
+];
 
 export function FrameworkGrid() {
   return (
@@ -40,11 +36,18 @@ export function FrameworkGrid() {
               : "border-gray-800 bg-gray-900/50 hover:bg-gray-900"
           }`}
         >
-          <Image src={framework.logo} alt={framework.name} width={60} height={60} className="mb-2" />
-          <span className="text-sm font-medium text-gray-300">{framework.name}</span>
+          <img
+            src={framework.logo}
+            alt={framework.name}
+            width={60}
+            height={60}
+            className="mb-2"
+          />
+          <span className="text-sm font-medium text-gray-300">
+            {framework.name}
+          </span>
         </div>
       ))}
     </div>
-  )
+  );
 }
-
