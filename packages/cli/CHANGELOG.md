@@ -1,5 +1,11 @@
 # @rccpr/cli
 
+## 1.1.6
+
+### Patch Changes
+
+- 8539424: update tsup
+
 ## 1.1.5
 
 ### Patch Changes
