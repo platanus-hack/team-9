@@ -3,7 +3,7 @@ import { PaymentStatusCard } from "@/components/payment-status-card";
 import { z } from "zod";
 
 export default async function PaymentStatusPage(props: {
-  searchParams: unknown;
+  searchParams: Promise<unknown>;
 }) {
   const { publicKey, payment_intent_client_secret } = z
     .object({
