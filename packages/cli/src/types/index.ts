@@ -10,3 +10,5 @@ export type PackageInfo = {
   };
   keywords: string[];
 };
+
+export type PMType = "npm" | "yarn" | "pnpm" | "bun";

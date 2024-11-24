@@ -4,9 +4,7 @@
   "description": "CLI project",
   "index": "dist/index.js",
   "main": "dist/index.js",
-  "bin": {
-    "cli": "./dist/index.js"
-  },
+  "type": "module",
   "files": [
     "dist"
   ],
@@ -14,13 +12,14 @@
     "build": "tsup",
     "start": "tsup --onSuccess 'node dist/index.js'",
     "dev": "tsup --watch --onSuccess 'node dist/index.js'",
-    "lint": "eslint . -c ./src/*.ts",
-    "prepare": "husky"
+    "lint": "eslint . -c ./src/*.ts"
   },
   "author": "Diego Garcia (Outcast50903)",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^5.3.0",
     "commander": "^12.1.0",
+    "consola": "^3.2.3",
     "dotenv": "^16.4.5",
     "execa": "^9.5.1",
     "ora": "^8.1.1",
