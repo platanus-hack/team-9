@@ -1,5 +1,11 @@
 # @rccpr/cli
 
+## 1.1.7
+
+### Patch Changes
+
+- fix cli
+
 ## 1.1.6
 
 ### Patch Changes

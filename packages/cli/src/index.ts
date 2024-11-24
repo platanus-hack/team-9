@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { Command } from "commander";
 import { add } from "@/commads/add";
 import dotenv from "dotenv";
@@ -16,7 +14,7 @@ const main = async () => {
   program.version(
     packageInfo.version || "1.0.0",
     "-v, --version",
-    "display the version number"
+    "display the version number "
   );
 
   program.addCommand(add);
