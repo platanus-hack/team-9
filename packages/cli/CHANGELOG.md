@@ -1,5 +1,11 @@
 # @rccpr/cli
 
+## 1.1.4
+
+### Patch Changes
+
+- 2caeae9: uupdate CLI entry point
+
 ## 1.1.3
 
 ### Patch Changes
