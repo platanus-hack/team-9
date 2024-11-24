@@ -1,8 +1,9 @@
 import { Console, Context, Effect, Either, Layer } from "effect";
 import { PaymentIntentStatus, SupportedCurrencies } from "../constants";
 import { DataService, PaymentIntent } from "../services/data.service";
-import { RequestInternal } from "../internal.types";
+import { RccprHandler, RequestInternal } from "../internal.types";
 import { match } from "ts-pattern";
+import type { TrieRouter } from "@rccpr/trie-router";
 
 export type PaymentIntentOutput = { id: string; link: string };
 
@@ -30,6 +31,7 @@ type Detail = {
   getPaymentIntentStatus(paymentIntentId: string): Effect.Effect<{
     status: PaymentIntentStatus;
   }>;
+  addInternalRoutes?: (router: TrieRouter<RccprHandler>) => void;
 };
 export class IntegrationDetail extends Context.Tag(
   "@rccpr/internal/integration-detail"
