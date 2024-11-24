@@ -9,13 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { toast } from "sonner"; // Importar toast de Sonner para las notificaciones
 import { trpc } from "@/trpc/react"; // TRPC para las mutaciones
 import dayjs from "dayjs";
@@ -32,7 +26,22 @@ export function ApiKeysContent() {
   const formattedDate = dayjs(apiKeys?.createdAt ?? new Date()).format(
     "MMM DD, YYYY, hh:mm A",
   );
-
+  // Mutación para generar una nueva API key
+  const {mutateAsync: createApiKeyMutation} = trpc.apiKey.create.useMutation();
+  
+  const handleGenerateKey = async () => {
+    toast.promise(
+      (async () => {
+        await createApiKeyMutation(), // Llamas a la mutación para cambiar la API key
+          {
+        loading: "Generando API Key...",
+        success: "API Key creada exitosamente.",
+        error: "Error al generar API Key",
+      },
+        await utils.apiKey.get.refetch();
+      })(),
+    );
+  };
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -84,15 +93,6 @@ export function ApiKeysContent() {
             Copy your environment variable to your clipboard.
           </p>
         </div>
-        <Select value={selectedKey} onValueChange={setSelectedKey}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select key type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="secret">Secret Key</SelectItem>
-            <SelectItem value="public">Public Key</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       <div className="relative rounded-lg border bg-muted/50 p-3">
@@ -118,24 +118,23 @@ export function ApiKeysContent() {
           <h2 className="text-lg font-semibold">Standard Keys</h2>
           <Button
             variant="outline"
-            onClick={() => copyToClipboard("sk_live_example_key")}
+            onClick={handleGenerateKey}
           >
             Create new key
           </Button>
         </div>
         <div className="mt-4 rounded-lg border">
-          <div className="grid grid-cols-4 gap-4 p-4 font-medium">
-            <div>Name</div>
+          <div className="grid grid-cols-3 gap-4 p-4 font-medium">
             <div>Key</div>
             <div>Created</div>
             <div className="text-right">Actions</div>
           </div>
+          {apiKeys &&
           <div className="border-t">
             <div
-              className="grid grid-cols-4 gap-4 p-4"
+              className="grid grid-cols-3 gap-4 p-4"
               key={apiKeys?.id ?? "N/A"}
             >
-              <div>{apiKeys?.token}</div>
               <div className="flex items-center gap-2">
                 <span className="font-mono">{apiKeys?.token}</span>
                 <Button
@@ -173,7 +172,8 @@ export function ApiKeysContent() {
                 </DropdownMenu>
               </div>
             </div>
-          </div>
+          </div>   
+          }
         </div>
       </div>
     </div>

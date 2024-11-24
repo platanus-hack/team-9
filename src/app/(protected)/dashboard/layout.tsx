@@ -1,3 +1,6 @@
+import { MainSidebar } from "@/components/mainSideBar";
+import { AppSidebar } from "@/components/ui/app-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -14,10 +17,16 @@ export default function ProtectedLayout({
   return (
     <main>
       <div className="flex h-screen">
-        <Suspense fallback={<div>Loading...</div>}>
-          {/*   <MainSidebar /> */}
-        </Suspense>
-        <div className="flex w-full flex-col">{children}</div>
+        <SidebarProvider>
+      <AppSidebar />
+      <main>
+            <SidebarTrigger />
+            <div className="px-10 py-5">
+        {children}
+
+            </div>
+      </main>
+    </SidebarProvider>
       </div>
     </main>
   );
