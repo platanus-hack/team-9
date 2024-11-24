@@ -7,4 +7,7 @@ export default defineConfig((options) => ({
   format: ["cjs"],
   target: "node14",
   clean: true,
+  banner: {
+    js: "#!/usr/bin/env node",
+  },
 }));
