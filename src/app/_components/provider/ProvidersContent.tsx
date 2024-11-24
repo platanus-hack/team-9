@@ -150,7 +150,7 @@ export function ProvidersForm({ userId }: { userId: string }) {
                       <FormLabel className="text-base">
                         <div className="flex items-center space-x-2">
                           <FactoryIcon className="h-4 w-4" />
-                          <span>Fintoc</span>
+                          <span>Stripe</span>
                         </div>
                       </FormLabel>
                     </div>
@@ -172,7 +172,7 @@ export function ProvidersForm({ userId }: { userId: string }) {
                     name="providers.1.api_key"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>API Key</FormLabel>
+                        <FormLabel>Pushable key</FormLabel>
                         <FormControl>
                           <Input {...field} type="password" />
                         </FormControl>
