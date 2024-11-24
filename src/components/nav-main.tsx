@@ -17,11 +17,15 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { data } from "@/app/utils/navBarStructure"
 
 export function NavMain({
-  items,
+  userId
 }: {
-  items: {
+  userId: string,
+  }) {
+  const prevURL = `/dashboard/${userId}`
+  const items: {
     title: string
     url: string
     icon?: LucideIcon
@@ -30,8 +34,7 @@ export function NavMain({
       title: string
       url: string
     }[]
-  }[]
-}) {
+  }[] = data.navMain || []
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -56,7 +59,7 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <a href={prevURL + subItem.url}>
                           <span>{subItem.title}</span>
                         </a>
                       </SidebarMenuSubButton>

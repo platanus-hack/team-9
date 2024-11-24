@@ -18,7 +18,9 @@ export default function ProtectedLayout({
     <main>
       <div className="flex h-screen">
         <SidebarProvider>
-      <AppSidebar />
+          <Suspense>
+            <AppSidebar />
+          </Suspense>
       <main>
             <SidebarTrigger />
             <div className="px-10 py-5">

@@ -29,17 +29,17 @@ export function ApiKeysContent() {
   // Mutación para generar una nueva API key
   const {mutateAsync: createApiKeyMutation} = trpc.apiKey.create.useMutation();
   
-  const handleGenerateKey = async () => {
+  const handleGenerateKey = () => {
     toast.promise(
       (async () => {
         await createApiKeyMutation(), // Llamas a la mutación para cambiar la API key
-          {
-        loading: "Generando API Key...",
-        success: "API Key creada exitosamente.",
-        error: "Error al generar API Key",
-      },
         await utils.apiKey.get.refetch();
       })(),
+      {
+    loading: "Generando API Key...",
+    success: "API Key creada exitosamente.",
+    error: "Error al generar API Key",
+  },
     );
   };
   const copyToClipboard = async (text: string) => {
@@ -51,32 +51,31 @@ export function ApiKeysContent() {
     }
   };
 
-  const handleRollKey = async () => {
+  const handleRollKey = () => {
     toast.promise(
       (async () => {
         await rollApiKey(), // Llamas a la mutación para cambiar la API key
-          {
-            loading: "Rolling the API Key...",
-            success: "API Key rolled successfully!",
-            error: "Failed to roll the API Key",
-          };
         await utils.apiKey.get.refetch();
       })(),
-    );
+      {
+        loading: "Rolling the API Key...",
+        success: "API Key rolled successfully!",
+        error: "Failed to roll the API Key",
+      }
+    )
   };
 
-  const handleDeleteKey = async () => {
+  const handleDeleteKey = () => {
     toast.promise(
       (async () => {
         await deleteApiKey(), // Llamas a la mutación para borrar la API key
-          {
-            loading: "Deleting the API Key...",
-            success: "API Key deleted successfully!",
-            error: "Failed to delete the API Key",
-          };
         await utils.apiKey.get.refetch();
       })(),
-    );
+      {
+        loading: "Deleting the API Key...",
+        success: "API Key deleted successfully!",
+        error: "Failed to delete the API Key",
+      })
   };
 
   return (

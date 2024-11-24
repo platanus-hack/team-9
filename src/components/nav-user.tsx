@@ -29,17 +29,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { data } from "@/app/utils/navBarStructure"
 
-export function NavUser({
-  user,
-}: {
-  user: {
+export function NavUser() {
+  const { isMobile } = useSidebar()
+  const user: {
     name: string
     email: string
     avatar: string
-  }
-}) {
-  const { isMobile } = useSidebar()
+  } = data.user
 
   return (
     <SidebarMenu>

@@ -19,10 +19,6 @@ export const apiKeyRouter = createTRPCRouter({
     const userId = ctx.user.id;
     const apiKey = await apiKeyService.getApiKey(userId);
 
-    if (!apiKey) {
-      throw new Error("No se encontró un API key para este usuario.");
-    }
-
     return apiKey;
   }),
 
