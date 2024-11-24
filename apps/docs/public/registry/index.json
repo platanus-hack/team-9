@@ -1,13 +1,15 @@
 [
   {
-    "name": "payment-component",
+    "name": "checkout-component",
     "dependencies": [
-      "react-toastify"
+      "lucide-react"
     ],
     "registryDependencies": [
-      "payment-action",
-      "payment-ui",
-      "alert-dialog"
+      "card-item",
+      "checkout-form",
+      "checkout",
+      "checkout-action",
+      "paymentMethod-button"
     ],
     "type": "components:ui"
   }
