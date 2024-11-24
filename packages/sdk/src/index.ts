@@ -1,11 +1,18 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import { SupportedCurrencies } from "./supported-currencies";
-import type { PaymentIntentOutput } from "@rccpr/core";
-
+import type { PaymentIntentOutput as _PaymentIntentOutput } from "@rccpr/core";
+import type { IsEqual } from "type-fest";
 type PaySdkOptions = {
   apiURL: string;
   axiosOptions?: AxiosRequestConfig;
 };
+
+type PaymentIntentOutput = {
+  id: string;
+  link: string;
+};
+
+type X = IsEqual<PaymentIntentOutput, _PaymentIntentOutput>;
 
 export class PaySdk {
   axios: AxiosInstance;
