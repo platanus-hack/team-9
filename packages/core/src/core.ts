@@ -33,7 +33,11 @@ type InternalOptions = {
 
 const requestBody = z.object({
   unitBase: z.number().int(),
-  currency: z.enum(["USD", "CLP"] as const satisfies SupportedCurrencies[]),
+  currency: z.enum([
+    "USD",
+    "CLP",
+    "MXN",
+  ] as const satisfies SupportedCurrencies[]),
   referenceId: z.string(),
 });
 

@@ -3,6 +3,8 @@ import { Readable } from "stream";
 import { createIntegration, IntegrationDetail } from "../base-integration";
 import { SupportedHTTPMethod } from "../../constants";
 import z from "zod";
+import { GetValueByName, getValueFrom } from "../../helpers/get-value-from";
+import { getSessionToken } from "./service";
 
 type FintocHTMLOptions = {
   sessionToken: string;
@@ -35,7 +37,12 @@ const fintocHTML = (options: FintocHTMLOptions) => `
   </html>
 `;
 
-export const createFintocIntegration = () => {
+type FintocConfig = {
+  secretKey: string | GetValueByName<string>;
+  publicKey: string | GetValueByName<string>;
+};
+
+export const createFintocIntegration = (config: FintocConfig) => {
   const name = "fintoc" as const;
 
   const fintocLive = Layer.succeed(
@@ -48,9 +55,28 @@ export const createFintocIntegration = () => {
         });
       },
 
-      createPaymentIntent({ baseUnit, externalId, paymentIntentId }) {
+      createPaymentIntent({ baseUnit, externalId, currency, paymentIntentId }) {
         return Effect.gen(function* () {
-          return {} as any;
+          const secretKey = yield* Effect.promise(() =>
+            getValueFrom(config.secretKey, [paymentIntentId])
+          );
+          const sessionToken = yield* Effect.promise(() =>
+            getSessionToken(
+              {
+                currency: currency,
+                amount: baseUnit,
+                customer_email: null,
+              },
+              secretKey
+            )
+          );
+          const [partOne, partTwo] = externalId.split("_");
+          const id = [partOne, partTwo].join("_");
+
+          return {
+            id,
+            link: `${"/api/pay"}/integration/${name}/internal/fintoc-html?sessionToken=${sessionToken}&publicKey=${config.publicKey}`,
+          };
         });
       },
       handleWebhookRequest: (originalRequest, req) => {
