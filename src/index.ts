@@ -23,19 +23,3 @@ const main = async () => {
 };
 
 main();
-
-// import { readFileSync } from "fs";
-// import path from "path";
-// function transformFileToRawString(filePath: string): string {
-//   if (!filePath.endsWith(".ts") && !filePath.endsWith(".tsx")) {
-//     throw new Error("File must be a .ts or .tsx file");
-//   }
-
-//   const fileContent = readFileSync(filePath, "utf-8");
-//   return JSON.stringify(fileContent);
-// }
-
-// const rawString = transformFileToRawString(
-//   "./src/registry/actions/payment-component.ts"
-// );
-// console.log(rawString);
