@@ -10,14 +10,14 @@ export interface ValidatedProviderTokenType {
 export const mercadoPagoType = z.object({
   provider: z.literal(ProviderName.MERCADOPAGO),
   active: z.boolean().default(false),
-  api_key: z.string().min(1, "Access Token is required"),
+  api_key: z.string(),
 });
 
 export const fintocType = z.object({
   provider: z.literal(ProviderName.FINTOC),
   active: z.boolean().default(false),
-  api_key: z.string().min(1, "Access Token is required"),
-  secret_key: z.string().min(1, "Secret Key is required"),
+  api_key: z.string(),
+  secret_key: z.string(),
 });
 
 export const apikeysType = z.discriminatedUnion("provider", [

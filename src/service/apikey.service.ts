@@ -59,6 +59,10 @@ class ApikeyService {
       where: { userId },
     });
 
+    await db.providerToken.deleteMany({
+      where: { userId },
+    });
+
     return deleted.count > 0; // Devuelve true si se eliminó al menos un registro.
   }
 

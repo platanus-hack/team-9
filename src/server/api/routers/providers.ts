@@ -17,14 +17,12 @@ export const providerRouter = createTRPCRouter({
   createProviders: protectedProcedure
     .input(
       z.object({
-        userId: z.string().uuid(),
         encryptedTokens: apikeysTypes,
       }),
     )
-    .mutation(async ({ input }) => {
-      const { userId, encryptedTokens } = input;
-
-      await providerService.createProviders(encryptedTokens, userId);
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      await providerService.createProviders(input.encryptedTokens, userId);
       return { message: "Providers created successfully." };
     }),
 

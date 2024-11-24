@@ -10,7 +10,7 @@ const ProvidersPage = () => {
   return (
     <div>
       {/* Aquí colocarás el contenido relacionado con las API Keys */}
-      <ProvidersForm />
+      <ProvidersForm userId={userId} />
     </div>
   );
 };
