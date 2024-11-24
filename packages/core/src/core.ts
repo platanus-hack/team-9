@@ -9,7 +9,6 @@ import { RccprHandler } from "./internal.types";
 import { SupportedCurrencies, SupportedHTTPMethod } from "./constants";
 import z from "zod";
 import { processRequest } from "./request-handler";
-import { cons } from "effect/List";
 
 type Integrations = {
   [T in string]: Layer.Layer<
@@ -78,6 +77,7 @@ export class Core {
       );
 
       this.addIntegration(integrationName, newLive);
+      this.addGeneralRoutes();
       this.addInternalRoutes(newLive);
     }
   }
@@ -179,6 +179,33 @@ export class Core {
       const runnable = Effect.provide(program, integrationLive);
 
       return Effect.runPromise(runnable);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  private addGeneralRoutes = () => {
+    try {
+      const router = this.router;
+      router.add(
+        SupportedHTTPMethod.GET,
+        "/general/supported_currencies",
+        async () => {
+          return {
+            headers: { "Content-Type": "application/json" },
+            body: Object.values(SupportedCurrencies),
+          };
+        }
+      );
+      router.add(
+        SupportedHTTPMethod.GET,
+        "/general/supported_services",
+        async () => {
+          return {
+            headers: { "Content-Type": "application/json" },
+            body: Object.keys(this.integrations),
+          };
+        }
+      );
     } catch (e) {
       console.log(e);
     }

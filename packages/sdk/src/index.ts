@@ -41,6 +41,13 @@ export class PaySdk {
     return response.data;
   };
 
+  getSupportedProvider = async (): Promise<string[]> => {
+    const response = await this.axios.get<string[]>(
+      `/general/supported_services`
+    );
+
+    return response.data;
+  };
   requestPaymentLink = async ({
     service,
     selectedCurrency,
