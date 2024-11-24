@@ -5,6 +5,7 @@ import { SupportedHTTPMethod } from "../../constants";
 import z from "zod";
 import { GetValueByName, getValueFrom } from "../../helpers/get-value-from";
 import Stripe from "stripe";
+import { match } from "ts-pattern";
 
 const stripeHTML = ({
   publicKey,
@@ -407,7 +408,23 @@ export const createStripeIntegration = (config: StripeConfig) => {
       supportedCurrencies: ["USD"],
       getPaymentIntentStatus(paymentIntentId: string) {
         return Effect.gen(function* () {
-          return {} as any;
+          const secretKey = yield* Effect.promise(() =>
+            getValueFrom(config.secretKey, [paymentIntentId])
+          );
+
+          const stripe = new Stripe(secretKey);
+          const intent = yield* Effect.promise(() =>
+            stripe.paymentIntents.retrieve(paymentIntentId)
+          );
+
+          intent.status === "succeeded";
+
+          return {
+            status: match(intent.status)
+              .with("canceled", () => "FAILED" as const)
+              .with("succeeded", () => "SUCCEEDED" as const)
+              .otherwise(() => "PROCESSING" as const),
+          };
         });
       },
       createPaymentIntent({ baseUnit, externalId, currency, paymentIntentId }) {
@@ -436,7 +453,26 @@ export const createStripeIntegration = (config: StripeConfig) => {
         });
       },
       handleWebhookRequest: (originalRequest, req) => {
-        return {} as any;
+        const event = req.body;
+
+        if (!event) {
+          throw new Error("No event in request body");
+        }
+
+        return match(event.type)
+          .with("payment_intent.succeeded", () => {
+            const paymentIntent = event.data.object;
+            return Effect.succeed({ id: paymentIntent.id });
+          })
+          .with("payment_method.attached", () => {
+            const paymentMethod = event.data.object;
+            console.log({ paymentMethod });
+            return Effect.succeed({ id: event.id });
+          })
+          .otherwise(() => {
+            console.log(`Unhandled event type ${event.type}`);
+            return Effect.succeed({ id: event.id });
+          });
       },
       internalRoutes: [
         [
