@@ -35,6 +35,7 @@
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.4",
+    "@rccpr/cli": "^1.1.6",
     "@rccpr/core": "^0.1.1",
     "@rccpr/sdk": "^0.1.2",
     "@stepperize/react": "^3.1.1",

@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from "@/components/ui/table";
 
 export function ProceduresByCommercialManager() {
   return (
@@ -17,8 +17,8 @@ export function ProceduresByCommercialManager() {
           <AvatarFallback>PF</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Pedro Ferreira</p>
-          <p className="text-sm text-muted-foreground">pferreira@az.cl</p>
+          <p className="text-sm font-medium leading-none">Juana</p>
+          <p className="text-sm text-muted-foreground">some@email.cl</p>
         </div>
         <div className="ml-auto font-medium">+1000</div>
       </div>
@@ -28,8 +28,8 @@ export function ProceduresByCommercialManager() {
           <AvatarFallback>YG</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Yelitza García</p>
-          <p className="text-sm text-muted-foreground">ygarcia@az.cl</p>
+          <p className="text-sm font-medium leading-none">Juana García</p>
+          <p className="text-sm text-muted-foreground">some@email.cl</p>
         </div>
         <div className="ml-auto font-medium">+999</div>
       </div>
@@ -39,8 +39,8 @@ export function ProceduresByCommercialManager() {
           <AvatarFallback>PA</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Pía Arias</p>
-          <p className="text-sm text-muted-foreground">parias@az.cl</p>
+          <p className="text-sm font-medium leading-none">Juan</p>
+          <p className="text-sm text-muted-foreground">some@email.cl</p>
         </div>
         <div className="ml-auto font-medium">+998</div>
       </div>
@@ -50,8 +50,8 @@ export function ProceduresByCommercialManager() {
           <AvatarFallback>CG</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Cristina Gamper</p>
-          <p className="text-sm text-muted-foreground">cgamper@az.cl</p>
+          <p className="text-sm font-medium leading-none">Juana</p>
+          <p className="text-sm text-muted-foreground">some@email.cl</p>
         </div>
         <div className="ml-auto font-medium">+997</div>
       </div>
@@ -61,13 +61,13 @@ export function ProceduresByCommercialManager() {
           <AvatarFallback>EG</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Elisabeth Galvez</p>
-          <p className="text-sm text-muted-foreground">egalvez@az.cl</p>
+          <p className="text-sm font-medium leading-none">Juana</p>
+          <p className="text-sm text-muted-foreground">some@email.cl</p>
         </div>
         <div className="ml-auto font-medium">+996</div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function ShortTable() {
@@ -84,39 +84,39 @@ export default function ShortTable() {
         <TableRow className="border-l-4 border-transparent hover:border-primary">
           <TableCell className="font-medium">1</TableCell>
           <TableCell>John Doe</TableCell>
-          <TableCell className="hidden md:table-cell text-muted-foreground">
+          <TableCell className="hidden text-muted-foreground md:table-cell">
             $50,000
           </TableCell>
         </TableRow>
         <TableRow className="border-l-4 border-transparent hover:border-primary">
           <TableCell className="font-medium">2</TableCell>
           <TableCell>Jane Smith</TableCell>
-          <TableCell className="hidden md:table-cell text-muted-foreground">
+          <TableCell className="hidden text-muted-foreground md:table-cell">
             $35,000
           </TableCell>
         </TableRow>
         <TableRow className="border-l-4 border-transparent hover:border-primary">
           <TableCell className="font-medium">3</TableCell>
           <TableCell>Bob Johnson</TableCell>
-          <TableCell className="hidden md:table-cell text-muted-foreground">
+          <TableCell className="hidden text-muted-foreground md:table-cell">
             $25,000
           </TableCell>
         </TableRow>
         <TableRow className="border-l-4 border-transparent hover:border-primary">
           <TableCell className="font-medium">4</TableCell>
           <TableCell>Alice Williams</TableCell>
-          <TableCell className="hidden md:table-cell text-muted-foreground">
+          <TableCell className="hidden text-muted-foreground md:table-cell">
             $20,000
           </TableCell>
         </TableRow>
         <TableRow className="border-l-4 border-transparent hover:border-primary">
           <TableCell className="font-medium">5</TableCell>
           <TableCell>Tom Davis</TableCell>
-          <TableCell className="hidden md:table-cell text-muted-foreground">
+          <TableCell className="hidden text-muted-foreground md:table-cell">
             $15,000
           </TableCell>
         </TableRow>
       </TableBody>
     </Table>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-'use client'
-import { Bar, BarChart, XAxis } from 'recharts'
+"use client";
+import { Bar, BarChart, XAxis } from "recharts";
 
 import {
   Card,
@@ -7,44 +7,42 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/ui/chart'
-export const description = 'A stacked bar chart with a legend'
+} from "@/components/ui/chart";
+export const description = "A stacked bar chart with a legend";
 const chartData = [
-  { date: '2024-07-15', paid: 450, notPaid: 300 },
-  { date: '2024-07-16', paid: 380, notPaid: 420 },
-  { date: '2024-07-17', paid: 520, notPaid: 120 },
-  { date: '2024-07-18', paid: 140, notPaid: 550 },
-  { date: '2024-07-19', paid: 600, notPaid: 350 },
-  { date: '2024-07-20', paid: 480, notPaid: 400 },
-]
+  { date: "2024-07-15", paid: 450, notPaid: 300 },
+  { date: "2024-07-16", paid: 380, notPaid: 420 },
+  { date: "2024-07-17", paid: 520, notPaid: 120 },
+  { date: "2024-07-18", paid: 140, notPaid: 550 },
+  { date: "2024-07-19", paid: 600, notPaid: 350 },
+  { date: "2024-07-20", paid: 480, notPaid: 400 },
+];
 const chartConfig = {
   facturas: {
-    label: 'Facturas',
+    label: "Facturas",
   },
   paid: {
-    label: 'Pagadas',
-    color: '#dc2626',
+    label: "Pagadas",
+    color: "#dc2626",
   },
   notPaid: {
-    label: 'No Pagadas',
-    color: '#fca5a5',
+    label: "No Pagadas",
+    color: "#fca5a5",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function PaidNotPaid() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Facturas Pagadas - No Pagadas</CardTitle>
-        <CardDescription>
-          Cantidad de facturas pagadas y no pagadas en los últimos 6 meses.
-        </CardDescription>
+        <CardTitle>Payments vs missed oportunities</CardTitle>
+        <CardDescription>Coming soon.. </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -55,9 +53,9 @@ export function PaidNotPaid() {
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => {
-                return new Date(value).toLocaleDateString('en-US', {
-                  weekday: 'short',
-                })
+                return new Date(value).toLocaleDateString("en-US", {
+                  weekday: "short",
+                });
               }}
             />
             <Bar
@@ -83,5 +81,5 @@ export function PaidNotPaid() {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }

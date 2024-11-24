@@ -122,8 +122,7 @@ export function Stepper() {
                 <>
                   <CodeBlock
                     language="bash"
-                    code={`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_•••••••••••••••••
-CLERK_SECRET_KEY=sk_test_•••••••••••••••••`}
+                    code={`PAYCLI_API_KEY=sk_test_•••••••••••••••••`}
                   />
                   <p className="mt-4 text-sm text-gray-400">
                     Add these keys to your{" "}
