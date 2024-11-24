@@ -9,11 +9,13 @@ export interface ValidatedProviderTokenType {
 // Define Zod schemas
 export const mercadoPagoType = z.object({
   provider: z.literal(ProviderName.MERCADOPAGO),
+  active: z.boolean().default(false),
   api_key: z.string().min(1, "Access Token is required"),
 });
 
 export const fintocType = z.object({
   provider: z.literal(ProviderName.FINTOC),
+  active: z.boolean().default(false),
   api_key: z.string().min(1, "Access Token is required"),
   secret_key: z.string().min(1, "Secret Key is required"),
 });
