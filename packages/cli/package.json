@@ -1,13 +1,12 @@
 {
   "name": "@rccpr/cli",
-  "version": "1.1.7",
+  "version": "1.1.11",
   "description": "CLI project",
   "index": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
-    "cli": "./dist/index.cjs"
+    "cli": "./bin.js"
   },
-  "type": "module",
   "files": [
     "dist"
   ],

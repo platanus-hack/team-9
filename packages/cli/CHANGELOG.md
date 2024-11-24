@@ -1,5 +1,29 @@
 # @rccpr/cli
 
+## 1.1.11
+
+### Patch Changes
+
+- fix path
+
+## 1.1.10
+
+### Patch Changes
+
+- no
+
+## 1.1.9
+
+### Patch Changes
+
+- try with shebangs
+
+## 1.1.8
+
+### Patch Changes
+
+- another fix to cli
+
 ## 1.1.7
 
 ### Patch Changes

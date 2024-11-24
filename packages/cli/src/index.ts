@@ -7,7 +7,7 @@ import ora from "ora";
 dotenv.config();
 export const spinner = ora();
 
-const main = async () => {
+export const main = async () => {
   const packageInfo = getPackageInfo();
   const program = new Command();
 
@@ -21,5 +21,3 @@ const main = async () => {
 
   program.parse();
 };
-
-main();
