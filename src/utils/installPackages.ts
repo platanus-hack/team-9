@@ -11,8 +11,6 @@ export const installPackages = async (
   const installCommand = pmType === "npm" ? "install" : "add";
 
   try {
-    spinner.stop();
-    consola.info("Installing Dependencies");
     if ("regular" in packages) {
       await runCommand(
         pmType,

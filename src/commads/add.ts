@@ -115,7 +115,6 @@ export const add = new Command()
           await fs.writeFile(`${targetPath}/${file.name}`, file.content);
         }
 
-        spinner.succeed(`Installed dependencies`);
         if (component.dependencies?.length) {
           await installPackages(
             { regular: component.dependencies.join(" ") },
@@ -124,7 +123,6 @@ export const add = new Command()
         }
 
         if (component.devDependencies?.length) {
-          consola.log("Installing dev dependencies");
           await installPackages(
             { dev: component.devDependencies.join(" ") },
             packageManager

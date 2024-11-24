@@ -12,8 +12,7 @@
     "build": "tsup",
     "start": "tsup --onSuccess 'node dist/index.js'",
     "dev": "tsup --watch --onSuccess 'node dist/index.js'",
-    "lint": "eslint . -c ./src/*.ts",
-    "prepare": "husky"
+    "lint": "eslint . -c ./src/*.ts"
   },
   "author": "Diego Garcia (Outcast50903)",
   "license": "ISC",

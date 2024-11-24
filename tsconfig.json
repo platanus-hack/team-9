@@ -19,7 +19,7 @@
     "baseUrl": "./"
   },
   "include": [
-    "**/*.ts",
+    "**/*.ts", "app/App.tsx",
   ],
   "exclude": [
     "node_modules",
