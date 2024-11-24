@@ -1,5 +1,11 @@
 # @rccpr/sdk
 
+## 0.1.2
+
+### Patch Changes
+
+- 4e74cf2: Fixed dmeo
+
 ## 0.1.1
 
 ### Patch Changes

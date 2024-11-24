@@ -1,5 +1,11 @@
 # @rccpr/core
 
+## 0.2.0
+
+### Minor Changes
+
+- 4e74cf2: Fixed dmeo
+
 ## 0.1.1
 
 ### Patch Changes
