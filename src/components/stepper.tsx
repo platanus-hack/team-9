@@ -88,7 +88,7 @@ export function Stepper() {
               {step.id === "install" && (
                 <Tabs defaultValue="npm" className="w-full">
                   <TabsList className="mb-4 w-full justify-start space-x-6 border-b border-gray-800 bg-transparent p-0">
-                    {["npm", "yarn", "pnpm"].map((tool) => (
+                    {["npm", "yarn", "pnpm", "bun"].map((tool) => (
                       <TabsTrigger
                         key={tool}
                         value={tool}
@@ -103,20 +103,17 @@ export function Stepper() {
                     <TabsContent value="npm">
                       <CodeBlock
                         language="bash"
-                        code="npm install @clerk/nextjs"
+                        code="npm install @rccpr/sdk"
                       />
                     </TabsContent>
                     <TabsContent value="yarn">
-                      <CodeBlock
-                        language="bash"
-                        code="yarn add @clerk/nextjs"
-                      />
+                      <CodeBlock language="bash" code="yarn add @rccpr/sdk" />
                     </TabsContent>
                     <TabsContent value="pnpm">
-                      <CodeBlock
-                        language="bash"
-                        code="pnpm add @clerk/nextjs"
-                      />
+                      <CodeBlock language="bash" code="pnpm add @rccpr/sdk" />
+                    </TabsContent>
+                    <TabsContent value="bun">
+                      <CodeBlock language="bash" code="bun add @rccpr/sdk" />
                     </TabsContent>
                   </div>
                 </Tabs>
