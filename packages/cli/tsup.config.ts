@@ -7,4 +7,7 @@ export default defineConfig((options) => ({
   minify: !options.watch,
   clean: true,
   outDir: "dist",
+  banner: {
+    js: "#!/usr/bin/env node",
+  },
 }));
