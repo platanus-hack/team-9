@@ -1,5 +1,11 @@
 # @rccpr/cli
 
+## 1.1.5
+
+### Patch Changes
+
+- 4c0f9ef: add banner to cli
+
 ## 1.1.4
 
 ### Patch Changes
