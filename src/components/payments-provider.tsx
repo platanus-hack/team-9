@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { apikeysType, type EncryptedToken } from "@/service/apiKey.model";
+import { apikeysType, type EncryptedToken } from "@/service/apikey.model";
 
 export default function PaymentProviderSetup() {
   const { data } = trpc.provider.getProviders.useQuery();

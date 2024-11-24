@@ -5,7 +5,7 @@ import { ProviderName } from "@prisma/client";
 import {
   apikeysTypes,
   type ValidatedProviderTokenType,
-} from "@/service/apiKey.model";
+} from "@/service/apikey.model";
 
 /**
  * Router para manejar las operaciones de los tokens de proveedores con tRPC.

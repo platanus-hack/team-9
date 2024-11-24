@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
+    "@oslojs/encoding": "^1.1.0",
     "@prisma/client": "^5.14.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.1",
@@ -36,6 +37,7 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "@rccpr/core": "^0.1.1",
     "@rccpr/sdk": "^0.1.2",
+    "@stepperize/react": "^3.1.1",
     "@stripe/stripe-js": "^5.2.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
