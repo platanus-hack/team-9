@@ -1,13 +1,9 @@
 import { db } from "@/server/db";
 import { sha256 } from "@oslojs/crypto/sha2";
-import { encodeHexLowerCase, decodeBase32, decodeHex } from "@oslojs/encoding";
+import { encodeHexLowerCase, decodeBase32, decodeHex, encodeBase32 } from "@oslojs/encoding";
 import { type ProviderName, type ProviderToken } from "@prisma/client";
-import {
-  apikeysType,
-  type EncryptedToken,
-  type EncryptedTokens,
-  type ValidatedProviderTokenType,
-} from "./apiKey.model";
+import { EncryptedToken, EncryptedTokens, ValidatedProviderTokenType, apikeysType } from "./apikey.model";
+
 
 class ProviderService {
   /**
@@ -40,9 +36,7 @@ class ProviderService {
   generateProviderTokens(
     providerToken: EncryptedToken,
   ): ProviderToken["token"] {
-    return encodeHexLowerCase(
-      sha256(new TextEncoder().encode(JSON.stringify(providerToken))),
-    );
+    return (encodeBase32(new TextEncoder().encode(JSON.stringify(providerToken))))
   }
 
   /**
@@ -71,18 +65,10 @@ class ProviderService {
   /**
    * Valida si un usuario es el propietario de una API key.
    */
-  async validateIsUserOwner(userId: string, apikey: string): Promise<boolean> {
-    // Decodifica la apikey desde Base32
-    const decodedApikey = decodeBase32(apikey);
-    if (!decodedApikey) {
-      throw new Error("Invalid apikey");
-    }
-
-    const decodedString = this.uint8ArrayToString(decodedApikey);
-
+  async validateIsUserOwner(userId: string, apikey: string): Promise<boolean> {    
     // Busca la API key en la base de datos
-    const isOwnerApikey = await db.apiKey.findFirst({
-      where: { userId, token: decodedString },
+    const isOwnerApikey = await db.providerToken.findFirst({
+      where: { userId, token: apikey },
     });
 
     if (!isOwnerApikey) {
@@ -99,6 +85,7 @@ class ProviderService {
     input: ValidatedProviderTokenType,
   ): Promise<EncryptedTokens | null> {
     // Valida si el usuario es propietario de la API key
+
     await this.validateIsUserOwner(input.userId, input.apikey);
 
     // Busca un token activo del proveedor
@@ -111,7 +98,7 @@ class ProviderService {
     }
     const parsedTokens = providerTokens.map(
       ({ token, providerName }) => {
-        const decodedToken = decodeHex(token);
+        const decodedToken = decodeBase32(token);
         const decodedString = this.uint8ArrayToString(decodedToken);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const anyForm = JSON.parse(decodedString);
